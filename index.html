@@ -29,7 +29,19 @@
     @media(max-width:880px){.hero{padding-top:68px}.herogrid{grid-template-columns:1fr;gap:48px}.demo{max-width:590px;transform:none}.sectionhead{align-items:start;flex-direction:column}.categories{grid-template-columns:repeat(2,1fr)}.tools{flex-direction:column}}
     @media(max-width:640px){.navin,.container{padding-inline:18px}.navin{min-height:62px}.navlinks a{display:none}.hero{padding:52px 0 56px}h1{font-size:clamp(2.8rem,15vw,4.2rem)}.herocopy{font-size:1rem;margin:24px 0 28px}.actions{flex-direction:column}.btn{width:100%}.hero:after{display:none}.sheet{padding:20px}.section{padding:64px 0}.sectionhead{margin-bottom:28px}.categories,.promptgrid,.pricinggrid{grid-template-columns:1fr}.category{min-height:146px}.filters{display:grid;grid-template-columns:repeat(3,1fr)}.filter{padding-inline:6px}.pricecard{padding:26px 22px}.valuestrip{align-items:flex-start}.footerin{flex-direction:column}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
-  </style>
+  <style>
+.subbtn{width:100%;margin-top:auto;justify-content:center;min-height:52px;font-size:.95rem}
+.paybox{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:6px 0 4px}
+.paystep{font-size:.85rem;color:var(--muted);margin-bottom:10px}
+.paystep strong{color:var(--text)}
+.paynumrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.paynum{font-size:1.5rem;font-weight:800;letter-spacing:.02em}
+.paynumrow .btn{min-height:40px;padding:0 16px;font-size:.8rem}
+.paymeta{font-size:.8rem;color:var(--muted);margin-top:8px}
+input[type=file].filein{border:1px dashed var(--line);border-radius:10px;padding:12px;background:var(--bg);width:100%;font:inherit;color:var(--text);font-size:.85rem}
+</style>
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -38,12 +50,30 @@
 <section class="hero"><div class="container herogrid"><div><p class="eyebrow">PROMPTS THAT DO THE HEAVY LIFTING</p><h1>Stop prompting from scratch.</h1><p class="herocopy">Ready-to-use TikTok and YouTube prompt packs for creators who want better results without wasting hours on trial and error.</p><div class="actions"><a class="btn primary" href="#library">Explore free prompts →</a><a class="btn secondary" href="#pricing">View membership</a></div><div class="proof"><span>✓ Copy-ready templates</span><span>✓ Creator-focused</span><span>✓ New drops weekly</span></div></div><div class="demo" aria-label="Prompt template preview"><div class="demotop"><span>prompt / ai-video</span><span class="dots"><i></i><i></i><i></i></span></div><div class="sheet"><span class="tag">AI Video Prompt</span><h2>Turn an idea into a detailed generation prompt</h2><p>Create a <span class="token">[duration]</span> video of <span class="token">[subject]</span> in <span class="token">[setting]</span>. Use <span class="token">[camera movement]</span>, consistent lighting and natural motion...</p><div class="result"><strong>OUTPUT</strong><span>A precise, generator-ready scene description.</span></div></div></div></div></section>
 <section class="section" id="library"><div class="container"><div class="sectionhead"><h2>One library. Two platforms.</h2><p>Pick your platform — every prompt pack is shaped for how that platform is watched.</p></div><div class="sectabs" role="tablist" aria-label="Platform"><button class="sectab active" data-section="tiktok" role="tab">TikTok <small>vertical</small></button><button class="sectab" data-section="youtube" role="tab">YouTube <small>horizontal</small></button></div><div><button id="addPromptBtn" class="btn primary" type="button">+ Add new prompt</button></div><div class="tools"><label class="searchwrap" aria-label="Search prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input class="search" id="search" type="search" placeholder="Search prompts…" autocomplete="off"></label><div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="free">Free</button><button class="filter" data-filter="pro">Pro</button></div></div><div class="promptgrid" id="promptgrid"><div class="loadingbox" id="loadingbox">Loading prompts…</div></div><div class="noresults" id="noresults">No prompts match that search. Try a broader keyword.</div><div class="noresults" id="emptybox" style="display:none">Fresh prompts are being added — check back soon.</div></div></section>
 <section class="section alt" id="pricing"><div class="container"><div class="pricingintro"><h2>Simple monthly access.</h2><p>Start with the full core library or unlock the exclusive niche packs and get new releases first.</p></div><div class="pricinggrid">
-<article class="pricecard"><div class="pricetop"><span class="plan">Basic</span></div><div class="price">Rs 499 <small>PKR</small></div><div class="per">per month</div><ul class="features"><li>✓ Full core prompt library</li><li>✓ New prompts every week</li><li>✓ Copy-ready prompt templates</li><li>✓ TikTok and YouTube prompt packs</li></ul><button class="soon" disabled>Coming soon</button><p class="soonnote">Subscriptions will open shortly</p></article>
-<article class="pricecard featured"><div class="pricetop"><span class="plan">Pro</span><span class="popular">BEST VALUE</span></div><div class="price">Rs 999 <small>PKR</small></div><div class="per">per month</div><ul class="features"><li>✓ Everything in Basic</li><li>✓ Exclusive niche prompt packs</li><li>✓ Early access to new drops</li><li>✓ Premium workflow bundles</li></ul><button class="soon" disabled>Coming soon</button><p class="soonnote">Subscriptions will open shortly</p></article>
+<article class="pricecard"><div class="pricetop"><span class="plan">Basic</span></div><div class="price">Rs 499 <small>PKR</small></div><div class="per">per month</div><ul class="features"><li>✓ Full core prompt library</li><li>✓ New prompts every week</li><li>✓ Copy-ready prompt templates</li><li>✓ TikTok and YouTube prompt packs</li></ul><button class="btn solid subbtn" type="button" onclick="openPay('basic')">Subscribe — Rs 499</button></article>
+<article class="pricecard featured"><div class="pricetop"><span class="plan">Pro</span><span class="popular">BEST VALUE</span></div><div class="price">Rs 999 <small>PKR</small></div><div class="per">per month</div><ul class="features"><li>✓ Everything in Basic</li><li>✓ Exclusive niche prompt packs</li><li>✓ Early access to new drops</li><li>✓ Premium workflow bundles</li></ul><button class="btn solid subbtn" type="button" onclick="openPay('pro')">Subscribe — Rs 999</button></article>
 </div><div class="valuestrip"><span>◈</span><span><strong>No custom-request queue.</strong> Every release is a polished, reusable prompt pack available directly in the library.</span></div></div></section>
-<section class="section" id="faq"><div class="container"><div class="sectionhead"><h2>Good to know.</h2></div><div class="faqs"><details><summary>Which AI tools do the prompts work with?</summary><p>Each AI video prompt will clearly name the type of video generator it is intended for. Niche packs will identify any recommended AI tools inside the pack.</p></details><details><summary>How often are new prompts added?</summary><p>New prompt templates are planned every week, with Pro members receiving early access and exclusive niche-focused packs.</p></details><details><summary>How will subscriptions work?</summary><p>Subscriptions will be handled through direct WhatsApp contact and manual payment verification. The contact buttons will be enabled when subscriptions open.</p></details><details><summary>Does Pro include custom prompt requests?</summary><p>No. Pro focuses on exclusive niche packs, early access and premium workflow bundles rather than one-to-one custom requests.</p></details></div></div></section>
+<section class="section" id="faq"><div class="container"><div class="sectionhead"><h2>Good to know.</h2></div><div class="faqs"><details><summary>Which AI tools do the prompts work with?</summary><p>Each AI video prompt will clearly name the type of video generator it is intended for. Niche packs will identify any recommended AI tools inside the pack.</p></details><details><summary>How often are new prompts added?</summary><p>New prompt templates are planned every week, with Pro members receiving early access and exclusive niche-focused packs.</p></details><details><summary>How do I pay for a plan?</summary><p>Choose your plan and tap Subscribe. Send the amount to our Easypaisa account shown there, then submit your account email, the transaction ID and your payment screenshot. Your plan is activated after manual verification — usually within a few hours.</p></details><details><summary>Does Pro include custom prompt requests?</summary><p>No. Pro focuses on exclusive niche packs, early access and premium workflow bundles rather than one-to-one custom requests.</p></details></div></div></section>
 </main>
-<div class="toast" id="toast" role="status">Prompt copied</div>
+<div class="mback" id="payBack"><div class="modal" role="dialog" aria-modal="true" aria-label="Subscribe">
+<h3 id="payTitle">Subscribe</h3>
+<p class="sub">Pay with Easypaisa, then submit your payment proof below. Your plan is activated after verification.</p>
+<div class="paybox">
+<div class="paystep">1. Send <strong id="payAmount">Rs 499 / month</strong> to this Easypaisa account:</div>
+<div class="paynumrow"><span class="paynum">03093481582</span><button class="btn" id="copyNumBtn" type="button">Copy</button></div>
+<div class="paymeta">Easypaisa &middot; Talha Ali</div>
+<div class="paystep" style="margin-top:14px;margin-bottom:0">2. Fill in your payment details:</div>
+</div>
+<label for="p_email">Account email (the one you signed up with)</label>
+<input type="email" id="p_email" placeholder="you@example.com" autocomplete="email">
+<label for="p_txn">Transaction ID (from your Easypaisa app)</label>
+<input type="text" id="p_txn" placeholder="e.g. 34128947561" inputmode="numeric">
+<label for="p_file">Payment screenshot</label>
+<input type="file" id="p_file" class="filein" accept="image/*">
+<div class="merr" id="payErr"></div>
+<div class="mok" id="payOk" style="display:none"></div>
+<div class="mrow"><button class="btn" id="payClose" type="button">Cancel</button><button class="btn solid" id="paySubmit" type="button">Submit payment</button></div>
+</div></div><div class="toast" id="toast" role="status">Prompt copied</div>
 <div class="mback" id="loginBack"><div class="modal" role="dialog" aria-label="Log in"><h3>Log in</h3><p class="sub">Members and admin log in here.</p><label for="a_email">Email</label><input type="email" id="a_email" autocomplete="username" placeholder="you@email.com"><label for="a_pass">Password</label><input type="password" id="a_pass" autocomplete="current-password" placeholder="••••••••"><div class="merr" id="loginErr"></div><div class="mrow"><button class="btn primary" id="doLogin" type="button">Log in</button><button class="btn secondary" id="loginClose" type="button">Close</button></div></div></div>
 <div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — confirm your email, then log in.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="formBack"><div class="modal" role="dialog" aria-label="Prompt editor"><h3 id="formTitle">New prompt</h3><p class="sub">It goes live on the site as soon as you save.</p><div class="mrow2"><div><label for="m_cat">Section</label><select id="m_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div><div><label for="m_access">Access</label><select id="m_access"><option value="free">Free</option><option value="pro">Pro (members)</option></select></div></div><label for="m_title">Title</label><input type="text" id="m_title" placeholder="e.g. Cinematic Scene Builder"><label for="m_prompt">Prompt text</label><textarea id="m_prompt" placeholder="Write the full prompt here…"></textarea><label for="m_media">Video / Image / Thumbnail (optional)</label><input type="file" id="m_media" accept="image/*,video/*"><p class="sub" id="mediaNote" style="margin-top:8px"></p><div class="mrow2"><div><label for="m_order">Order (lower number shows first)</label><input type="number" id="m_order" value="0"></div></div><div class="merr" id="formErr"></div><div class="mrow"><button class="btn primary" id="savePrompt" type="button">Save prompt</button><button class="btn secondary" id="formClose" type="button">Cancel</button></div></div></div>
 <script>(function(){
@@ -123,8 +153,8 @@ function setViewer(v){
   $('navMembers').classList.toggle('hidden',!isA);
 }
 function logout(){token='';sessionStorage.removeItem('pv_admin_token');setViewer({guest:true});window.PVreload()}
-function closeModals(){['loginBack','signupBack','formBack'].forEach(function(i){$(i).classList.remove('open')})}
-['loginBack','signupBack','formBack'].forEach(function(i){$(i).addEventListener('click',function(e){if(e.target===$(i))closeModals()})});
+function closeModals(){['loginBack','signupBack','formBack','payBack'].forEach(function(i){$(i).classList.remove('open')})}
+['loginBack','signupBack','formBack','payBack'].forEach(function(i){$(i).addEventListener('click',function(e){if(e.target===$(i))closeModals()})});
 $('loginClose').onclick=closeModals;$('signupClose').onclick=closeModals;$('formClose').onclick=closeModals;
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModals()});
 function openLoginM(){$('loginErr').style.display='none';$('loginBack').classList.add('open')}
@@ -215,6 +245,49 @@ function delRow(p){
   if(!confirm('Delete "'+p.title+'"?'))return;
   api('/rest/v1/prompts?id=eq.'+p.id,'DELETE').then(function(){return deleteMedia(p.media_url)}).then(function(){window.PVreload()}).catch(function(e){alert('Could not delete: '+e.message)});
 }
+/* ---- easypaisa payment flow ---- */
+var EMAILJS={key:'PASTE_EMAILJS_PUBLIC_KEY',service:'PASTE_EMAILJS_SERVICE_ID',template:'PASTE_EMAILJS_TEMPLATE_ID'};
+var PAY_PLAN='basic',PAY_PRICES={basic:'Rs 499',pro:'Rs 999'};
+window.openPay=function(plan){PAY_PLAN=plan;
+  $('payTitle').textContent='Subscribe \u2014 '+(plan==='pro'?'Pro':'Basic');
+  $('payAmount').textContent=PAY_PRICES[plan]+' / month';
+  $('payErr').style.display='none';$('payOk').style.display='none';
+  if(window.PVviewer&&window.PVviewer.email)$('p_email').value=window.PVviewer.email;
+  closeModals();$('payBack').classList.add('open')};
+$('payClose').onclick=closeModals;
+$('copyNumBtn').onclick=function(){var x='03093481582';var t=$('toast');
+  function ok(){t.classList.add('show');setTimeout(function(){t.classList.remove('show')},1500)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(x).then(ok,ok)}
+  else{var a=document.createElement('textarea');a.value=x;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a);ok()}};
+$('paySubmit').onclick=function(){
+  var em=($('p_email').value||'').trim().toLowerCase(),txn=($('p_txn').value||'').trim(),fi=$('p_file'),f=fi.files[0];
+  var err=$('payErr');err.style.display='none';$('payOk').style.display='none';
+  function bad(m){err.textContent=m;err.style.display='block'}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return bad('Please enter a valid email address.');
+  if(!txn)return bad('Please enter the transaction ID from your Easypaisa app.');
+  if(!f)return bad('Please attach your payment screenshot.');
+  if(f.size>5*1024*1024)return bad('Screenshot must be under 5 MB.');
+  var btn=$('paySubmit');btn.disabled=true;btn.textContent='Submitting\u2026';
+  api('/rest/v1/profiles?select=id&email=eq.'+encodeURIComponent(em),'GET').then(function(rr){
+    if(!rr||!rr.length)throw new Error('No account found for this email. Please sign up first, then submit your payment.');
+    var ext=(f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,4)||'jpg';
+    var name='pay_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10)+'.'+ext;
+    return fetch(SB_URL+'/storage/v1/object/payment-proofs/'+name,{method:'POST',
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+SB_ANON,'Content-Type':f.type||'image/jpeg'},body:f})
+      .then(function(r){if(!r.ok)throw new Error('Screenshot upload failed. Please try again.');return name});
+  }).then(function(name){
+    var url=SB_URL+'/storage/v1/object/public/payment-proofs/'+name;
+    return api('/rest/v1/payments','POST',JSON.stringify({email:em,plan:PAY_PLAN,txn_id:txn,screenshot_url:url})).then(function(){return url});
+  }).then(function(url){
+    if(EMAILJS.key.indexOf('PASTE')===0||!window.emailjs)return;
+    try{emailjs.init(EMAILJS.key)}catch(e){}
+    return emailjs.send(EMAILJS.service,EMAILJS.template,{member_email:em,plan:PAY_PLAN.toUpperCase(),txn_id:txn,screenshot_url:url}).catch(function(){});
+  }).then(function(){
+    var ok=$('payOk');ok.textContent='Payment submitted! We will verify it and activate your plan soon.';ok.style.display='block';
+    $('p_txn').value='';fi.value='';
+  }).catch(function(e){bad((e&&e.message)||'Submission failed. Please try again.')})
+  .then(function(){btn.disabled=false;btn.textContent='Submit payment'});
+};
 boot();
 })();</script>
 </body></html>
