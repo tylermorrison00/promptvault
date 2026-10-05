@@ -35,8 +35,6 @@ input[type=search]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--s
 .hidden{display:none!important}
 @media(max-width:560px){.card{padding:20px}.mrow .dt{display:none}}
 a.tbtn{text-decoration:none;display:inline-flex;align-items:center}
-.tbtn.danger{color:var(--danger);border-color:var(--danger)}
-.bannedtag{background:#3d1512!important;color:#f0937f!important}
 </style>
 </head>
 <body>
@@ -53,7 +51,7 @@ a.tbtn{text-decoration:none;display:inline-flex;align-items:center}
 </div>
 <div class="card">
 <h2>Members</h2>
-<p class="sub">Set each member's plan — Free, Basic (30 days or permanent), or Pro (30 days or permanent). Banned members cannot log in. Paste an email in the search to find a member instantly.</p>
+<p class="sub">Set each member's plan — Free, Basic (30 days or permanent), or Pro (30 days or permanent). Paste an email in the search to find a member instantly.</p>
 <label for="q">Search by email</label>
 <input type="search" id="q" placeholder="Paste email here…" autocomplete="off">
 <div class="count" id="count"></div>
@@ -85,7 +83,7 @@ else{
   }).catch(function(){denied('Please log in on the main site first.')});
 }
 function load(){
-  api('/rest/v1/profiles?select=id,email,plan,plan_expires_at,banned,created_at&order=created_at.desc','GET').then(function(rows){
+  api('/rest/v1/profiles?select=id,email,plan,plan_expires_at,created_at&order=created_at.desc','GET').then(function(rows){
     allRows=rows||[];render();
   }).catch(function(e){$('list').innerHTML='<div class="empty">Could not load: '+e.message+'</div>'});
   api('/rest/v1/payments?select=*&status=eq.pending&order=created_at.desc','GET').then(renderPay).catch(function(){});
@@ -120,7 +118,7 @@ function render(){
     var em=document.createElement('div');em.className='em';em.textContent=m.email||String(m.id).slice(0,8);d.appendChild(em);
     var dt=document.createElement('div');dt.className='dt';try{dt.textContent=new Date(m.created_at).toLocaleDateString()}catch(e){}d.appendChild(dt);
     var pl=(m.plan||'free');
-    var tag=document.createElement('span');tag.className='protag'+(pl==='pro'?' on':'');tag.textContent=m.banned?'BANNED':pl.toUpperCase();if(m.banned)tag.classList.add('bannedtag');d.appendChild(tag);
+    var tag=document.createElement('span');tag.className='protag'+(pl==='pro'?' on':'');tag.textContent=pl.toUpperCase();d.appendChild(tag);
     var ex=document.createElement('div');ex.className='dt';
     if(pl==='free')ex.textContent='\u2014';
     else if(m.plan_expires_at){try{ex.textContent='till '+new Date(m.plan_expires_at).toLocaleDateString()}catch(e){ex.textContent=''}}
@@ -135,12 +133,7 @@ function render(){
       if(p0!=='free'&&parts[1]==='30')exp=new Date(Date.now()+30*24*3600*1000).toISOString();
       api('/rest/v1/profiles?id=eq.'+m.id,'PATCH',JSON.stringify({plan:p0,plan_expires_at:exp}))
       .then(load).catch(function(e){alert(e.message);sel.disabled=false})};
-    d.appendChild(sel);
-    var ban=document.createElement('button');ban.className='tbtn'+(m.banned?'':' danger');ban.type='button';ban.textContent=m.banned?'Unban':'Ban';
-    ban.onclick=function(){if(!m.banned&&!confirm('Ban '+(m.email||'this member')+'? They will be logged out and blocked.'))return;ban.disabled=true;
-      api('/rest/v1/profiles?id=eq.'+m.id,'PATCH',JSON.stringify({banned:!m.banned}))
-      .then(load).catch(function(e){alert(e.message);ban.disabled=false})};
-    d.appendChild(ban);L.appendChild(d);
+    d.appendChild(sel);L.appendChild(d);
   });
 }
 $('q').addEventListener('input',render);
