@@ -107,7 +107,6 @@ tabs.forEach(function(b){b.onclick=function(){setSection(b.dataset.section)}});
 function cardHTML(p){
   var cat=normCat(p.category),pro=!!p.is_pro,
   catLabel=cat==='youtube'?'YOUTUBE':'TIKTOK',
-  usage=cat==='youtube'?'YouTube prompt pack':'TikTok prompt pack',
   badge=pro?'<span class="access">PRO</span>':'<span class="access free">FREE</span>',media='';
   if(p.media_url){media='<div class="cardmedia">'+(p.media_type==='video'
     ?'<video src="'+esc(p.media_url)+'" controls preload="metadata" playsinline></video>'
@@ -117,10 +116,10 @@ function cardHTML(p){
   tagrow=pTags.length?'<div class="tagrow">'+pTags.map(function(t){return '<span class="tagchip">'+esc(t)+'</span>'}).join('')+'</div>':'',
   starBtn='<button class="star" type="button" aria-label="Save to favorites">\u2606</button>';
   if(pro&&!(window.PVviewer&&(window.PVviewer.admin||window.PVviewer.plan==='pro'))){body='<div class="preview">This is a Pro member prompt. Log in as a member to unlock the full template.</div>';
-    foot='<span class="usage">'+usage+'</span>'+starBtn+'<span class="unlock">Membership required</span>'}
+    foot=starBtn+'<span class="unlock">Membership required</span>'}
   else{var full=p.prompt_text||'',trunc=full.length>150?full.slice(0,150).replace(/\s+\S*$/,'')+'…':full;
     body='<div class="preview" data-prompt="'+esc(full)+'">'+esc(trunc)+'</div>';
-    foot='<span class="usage">'+usage+'</span>'+starBtn+'<button class="copy" type="button">Copy prompt</button>'}
+    foot=starBtn+'<button class="copy" type="button">Copy prompt</button>'}
   return '<article class="promptcard'+(pro?' locked':'')+'" data-pid="'+p.id+'" data-cat="'+cat+'" data-access="'+(pro?'pro':'free')+'" data-search="'+esc(((p.title||'')+' '+catLabel+' '+(p.prompt_text||'')+' '+pTags.join(' ')).toLowerCase())+'">'
     +'<div class="cardmeta"><span class="cardtype">'+catLabel+'</span>'+badge+'</div>'
     +'<h3>'+esc(p.title)+'</h3>'+tagrow+media+body+'<div class="cardfoot">'+foot+'</div></article>';
