@@ -46,7 +46,7 @@ input[type=search]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--s
 <div id="app" class="hidden">
 <div class="card">
 <h2>Members</h2>
-<p class="sub">Toggle Pro access — only Pro members can view the premium prompts. Paste a member's email in the search to find them instantly.</p>
+<p class="sub">Set each member's plan — Free, Basic, or Pro. Only Pro members can view the premium prompts. Paste an email in the search to find a member instantly.</p>
 <label for="q">Search by email</label>
 <input type="search" id="q" placeholder="Paste email here…" autocomplete="off">
 <div class="count" id="count"></div>
@@ -78,7 +78,7 @@ else{
   }).catch(function(){denied('Please log in on the main site first.')});
 }
 function load(){
-  api('/rest/v1/profiles?select=id,email,is_pro,created_at&order=created_at.desc','GET').then(function(rows){
+  api('/rest/v1/profiles?select=id,email,plan,created_at&order=created_at.desc','GET').then(function(rows){
     allRows=rows||[];render();
   }).catch(function(e){$('list').innerHTML='<div class="empty">Could not load: '+e.message+'</div>'});
 }
@@ -92,12 +92,14 @@ function render(){
     var d=document.createElement('div');d.className='mrow';
     var em=document.createElement('div');em.className='em';em.textContent=m.email||String(m.id).slice(0,8);d.appendChild(em);
     var dt=document.createElement('div');dt.className='dt';try{dt.textContent=new Date(m.created_at).toLocaleDateString()}catch(e){}d.appendChild(dt);
-    var tag=document.createElement('span');tag.className='protag'+(m.is_pro?' on':'');tag.textContent=m.is_pro?'PRO':'BASIC';d.appendChild(tag);
-    var b=document.createElement('button');b.className='tbtn';b.type='button';b.textContent=m.is_pro?'Remove Pro':'Make Pro';
-    b.onclick=function(){b.disabled=true;
-      api('/rest/v1/profiles?id=eq.'+m.id,'PATCH',JSON.stringify({is_pro:!m.is_pro}))
-      .then(load).catch(function(e){alert(e.message);b.disabled=false})};
-    d.appendChild(b);L.appendChild(d);
+    var pl=(m.plan||'free');
+    var tag=document.createElement('span');tag.className='protag'+(pl==='pro'?' on':'');tag.textContent=pl.toUpperCase();d.appendChild(tag);
+    var sel=document.createElement('select');sel.className='tbtn';sel.setAttribute('aria-label','Set plan');
+    ['free','basic','pro'].forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v.charAt(0).toUpperCase()+v.slice(1);if(pl===v)o.selected=true;sel.appendChild(o)});
+    sel.onchange=function(){sel.disabled=true;
+      api('/rest/v1/profiles?id=eq.'+m.id,'PATCH',JSON.stringify({plan:sel.value}))
+      .then(load).catch(function(e){alert(e.message);sel.disabled=false})};
+    d.appendChild(sel);L.appendChild(d);
   });
 }
 $('q').addEventListener('input',render);
