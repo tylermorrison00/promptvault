@@ -34,10 +34,10 @@
 .paybox{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:6px 0 4px}
 .paystep{font-size:.85rem;color:var(--muted);margin-bottom:10px}
 .paystep strong{color:var(--text)}
-.paynumrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.paynum{font-size:1.5rem;font-weight:800;letter-spacing:.02em}
-.paynumrow .btn{min-height:40px;padding:0 16px;font-size:.8rem}
-.paymeta{font-size:.8rem;color:var(--muted);margin-top:8px}
+.paynumrow{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.paynum{font-size:1.7rem;font-weight:800;letter-spacing:.02em;color:var(--accent)}
+.paymeta2{font-size:1.05rem;font-weight:700;color:var(--text)}
+.paynumrow .btn{min-height:42px;padding:0 18px;font-size:.85rem}
 input[type=file].filein{border:1px dashed var(--line);border-radius:10px;padding:12px;background:var(--bg);width:100%;font:inherit;color:var(--text);font-size:.85rem}
 </style>
 </style>
@@ -60,8 +60,7 @@ input[type=file].filein{border:1px dashed var(--line);border-radius:10px;padding
 <p class="sub">Pay with Easypaisa, then submit your payment proof below. Your plan is activated after verification.</p>
 <div class="paybox">
 <div class="paystep">1. Send <strong id="payAmount">Rs 499 / month</strong> to this Easypaisa account:</div>
-<div class="paynumrow"><span class="paynum">03093481582</span><button class="btn" id="copyNumBtn" type="button">Copy</button></div>
-<div class="paymeta">Easypaisa &middot; Talha Ali</div>
+<div class="paynumrow"><span class="paynum">03093481582</span><span class="paymeta2">Easypaisa &middot; Talha Ali</span><button class="btn" id="copyNumBtn" type="button">Copy number</button></div>
 <div class="paystep" style="margin-top:14px;margin-bottom:0">2. Fill in your payment details:</div>
 </div>
 <label for="p_email">Account email (the one you signed up with)</label>
