@@ -172,10 +172,10 @@ var token=sessionStorage.getItem('pv_admin_token')||'';
 window.PVfavs=new Set();
 var editingId=null,editingMedia=null;
 function $(id){return document.getElementById(id)}
-function api(path,method,body,isFile){
+function api(path,method,body,isFile,minimal){
   var h={'apikey':SB_ANON,'Authorization':'Bearer '+(token||SB_ANON)};
   if(!isFile)h['Content-Type']='application/json';
-  if(method!=='GET'&&!isFile)h['Prefer']='return=representation';
+  if(method!=='GET'&&!isFile&&!minimal)h['Prefer']='return=representation';
   return fetch(SB_URL+path,{method:method||'GET',headers:h,body:body}).then(function(r){
     return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}
       if(!r.ok)throw new Error((j&&(j.message||j.msg))||('Error '+r.status));return j})});
@@ -286,7 +286,7 @@ function boot(){
     var uid=null;try{uid=JSON.parse(atob(token.split('.')[1])).sub}catch(e){}
     if(em&&em===ADMIN_EMAIL.toLowerCase()){setViewer({admin:true,email:em,uid:uid});loadFavs(uid);window.PVreload();return}
     if(!uid){window.PVfavs=new Set();setViewer({member:true,plan:'free'});window.PVreload();return}
-    api('/rest/v1/rpc/downgrade_expired_plan','POST','{}').catch(function(){}).then(function(){
+    api('/rest/v1/rpc/downgrade_expired_plan','POST','{}',false,true).catch(function(){}).then(function(){
       return api('/rest/v1/profiles?select=plan&id=eq.'+uid,'GET')}).then(function(rr){
       var prof=(rr&&rr[0])||{};
       setViewer({member:true,plan:(prof.plan||'free'),email:em,uid:uid});loadFavs(uid);window.PVreload();
@@ -394,7 +394,7 @@ $('paySubmit').onclick=function(){
       .then(function(r){if(!r.ok)throw new Error('Screenshot upload failed. Please try again.');return name});
   }).then(function(name){
     var url=SB_URL+'/storage/v1/object/public/payment-proofs/'+name;
-    return api('/rest/v1/payments','POST',JSON.stringify({email:em,plan:PAY_PLAN,txn_id:txn,screenshot_url:url})).then(function(){return url});
+    return api('/rest/v1/payments','POST',JSON.stringify({email:em,plan:PAY_PLAN,txn_id:txn,screenshot_url:url}),false,true).then(function(){return url});
   }).then(function(url){
     if(EMAILJS.key.indexOf('PASTE')===0||!window.emailjs)return;
     try{emailjs.init(EMAILJS.key)}catch(e){}
