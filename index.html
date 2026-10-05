@@ -287,9 +287,8 @@ function boot(){
     if(em&&em===ADMIN_EMAIL.toLowerCase()){setViewer({admin:true,email:em,uid:uid});loadFavs(uid);window.PVreload();return}
     if(!uid){window.PVfavs=new Set();setViewer({member:true,plan:'free'});window.PVreload();return}
     api('/rest/v1/rpc/downgrade_expired_plan','POST','{}').catch(function(){}).then(function(){
-      return api('/rest/v1/profiles?select=plan,banned&id=eq.'+uid,'GET')}).then(function(rr){
+      return api('/rest/v1/profiles?select=plan&id=eq.'+uid,'GET')}).then(function(rr){
       var prof=(rr&&rr[0])||{};
-      if(prof.banned){token='';sessionStorage.removeItem('pv_admin_token');window.PVfavs=new Set();setViewer({guest:true});window.PVreload();showLoginPane('login');$('loginErr').textContent='Your account has been suspended.';$('loginErr').style.display='block';$('loginBack').classList.add('open');return}
       setViewer({member:true,plan:(prof.plan||'free'),email:em,uid:uid});loadFavs(uid);window.PVreload();
     }).catch(function(){window.PVfavs=new Set();setViewer({member:true,plan:'free',uid:uid});window.PVreload()});
   }).catch(function(){token='';sessionStorage.removeItem('pv_admin_token');window.PVfavs=new Set();setViewer({guest:true});window.PVreload()});
