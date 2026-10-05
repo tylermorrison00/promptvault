@@ -86,8 +86,8 @@ input[type=file].filein{border:1px solid var(--line);border-radius:10px;backgrou
 <div class="mok" id="payOk" style="display:none"></div>
 <div class="mrow"><button class="btn" id="payClose" type="button">Cancel</button><button class="btn solid" id="paySubmit" type="button">Submit payment</button></div>
 </div></div><div class="toast" id="toast" role="status">Prompt copied</div>
-<div class="mback" id="loginBack"><div class="modal" role="dialog" aria-label="Log in"><h3>Log in</h3><p class="sub">Members and admin log in here.</p><label for="a_email">Email</label><input type="email" id="a_email" autocomplete="username" placeholder="you@email.com"><label for="a_pass">Password</label><input type="password" id="a_pass" autocomplete="current-password" placeholder="••••••••"><div class="merr" id="loginErr"></div><div class="mrow"><button class="btn primary" id="doLogin" type="button">Log in</button><button class="btn secondary" id="loginClose" type="button">Close</button></div></div></div>
-<div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — confirm your email, then log in.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="formBack"><div class="modal" role="dialog" aria-label="Prompt editor"><h3 id="formTitle">New prompt</h3><p class="sub">It goes live on the site as soon as you save.</p><div class="mrow2"><div><label for="m_cat">Section</label><select id="m_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div><div><label for="m_access">Access</label><select id="m_access"><option value="free">Free</option><option value="pro">Pro (members)</option></select></div></div><label>Tags</label><div class="tagpick" id="m_tagpick"></div><div class="tagaddrow"><input type="text" id="m_newtag" placeholder="New tag name" maxlength="24"><button class="btn" id="m_addtag" type="button">Add</button></div><label for="m_title">Title</label><input type="text" id="m_title" placeholder="e.g. Cinematic Scene Builder"><label for="m_prompt">Prompt text</label><textarea id="m_prompt" placeholder="Write the full prompt here…"></textarea><label for="m_media">Video / Image / Thumbnail (optional)</label><input type="file" id="m_media" accept="image/*,video/*"><p class="sub" id="mediaNote" style="margin-top:8px"></p><div class="mrow2"><div><label for="m_order">Order (lower number shows first)</label><input type="number" id="m_order" value="0"></div></div><div class="merr" id="formErr"></div><div class="mrow"><button class="btn primary" id="savePrompt" type="button">Save prompt</button><button class="btn secondary" id="formClose" type="button">Cancel</button></div></div></div>
+<div class="mback" id="loginBack"><div class="modal" role="dialog" aria-label="Log in"><h3 id="loginTitle">Log in</h3><div id="loginFields"><p class="sub">Members and admin log in here.</p><label for="a_email">Email</label><input type="email" id="a_email" autocomplete="username" placeholder="you@email.com"><label for="a_pass">Password</label><input type="password" id="a_pass" autocomplete="current-password" placeholder="••••••••"><div class="merr" id="loginErr"></div><div style="margin:2px 0 12px"><a href="#" id="forgotLink" style="font-size:.82rem;color:var(--accent);font-weight:700;text-decoration:none">Forgot password?</a></div><div class="mrow"><button class="btn primary" id="doLogin" type="button">Log in</button><button class="btn secondary" id="loginClose" type="button">Close</button></div></div><div id="resetFields" style="display:none"><p class="sub">Enter your account email and we will send you a reset link.</p><label for="r_email">Email</label><input type="email" id="r_email" placeholder="you@email.com"><div class="merr" id="resetErr"></div><div class="mok" id="resetOk"></div><div class="mrow"><button class="btn primary" id="doReset" type="button">Send reset link</button><button class="btn secondary" id="resetBack" type="button">Back</button></div></div><div id="newpassFields" style="display:none"><p class="sub">Choose a new password for your account.</p><label for="n_pass">New password</label><input type="password" id="n_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="newpassErr"></div><div class="mrow"><button class="btn primary" id="doNewpass" type="button">Set new password</button><button class="btn secondary" id="newpassClose" type="button">Close</button></div></div></div></div>
+<div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — you will be signed in right away.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="formBack"><div class="modal" role="dialog" aria-label="Prompt editor"><h3 id="formTitle">New prompt</h3><p class="sub">It goes live on the site as soon as you save.</p><div class="mrow2"><div><label for="m_cat">Section</label><select id="m_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div><div><label for="m_access">Access</label><select id="m_access"><option value="free">Free</option><option value="pro">Pro (members)</option></select></div></div><label>Tags</label><div class="tagpick" id="m_tagpick"></div><div class="tagaddrow"><input type="text" id="m_newtag" placeholder="New tag name" maxlength="24"><button class="btn" id="m_addtag" type="button">Add</button></div><label for="m_title">Title</label><input type="text" id="m_title" placeholder="e.g. Cinematic Scene Builder"><label for="m_prompt">Prompt text</label><textarea id="m_prompt" placeholder="Write the full prompt here…"></textarea><label for="m_media">Video / Image / Thumbnail (optional)</label><input type="file" id="m_media" accept="image/*,video/*"><p class="sub" id="mediaNote" style="margin-top:8px"></p><div class="mrow2"><div><label for="m_order">Order (lower number shows first)</label><input type="number" id="m_order" value="0"></div></div><div class="merr" id="formErr"></div><div class="mrow"><button class="btn primary" id="savePrompt" type="button">Save prompt</button><button class="btn secondary" id="formClose" type="button">Cancel</button></div></div></div>
 <script>(function(){
 var SB_URL="https://vfyuebkdkxhdrlduqxng.supabase.co";
 var SB_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeXVlYmtka3hoZHJsZHVxeG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExOTI1NDQsImV4cCI6MjEwNjc2ODU0NH0.RY-VU33zwySGKmPH34pHs72HaxRt9yi4lAhHO9xn7_4";
@@ -194,7 +194,7 @@ function closeModals(){['loginBack','signupBack','formBack','payBack'].forEach(f
 ['loginBack','signupBack','formBack','payBack'].forEach(function(i){$(i).addEventListener('click',function(e){if(e.target===$(i))closeModals()})});
 $('loginClose').onclick=closeModals;$('signupClose').onclick=closeModals;$('formClose').onclick=closeModals;
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModals()});
-window.PVopenLogin=function(){$('loginErr').style.display='none';$('loginBack').classList.add('open')};
+window.PVopenLogin=function(){$('loginErr').style.display='none';showLoginPane('login');$('loginBack').classList.add('open')};
 function paintStars(){
   var favs=window.PVfavs;
   Array.prototype.forEach.call(document.querySelectorAll('#promptgrid .star'),function(st){
@@ -230,11 +230,35 @@ function loadFavs(uid){
     var s2=new Set();(rows||[]).forEach(function(r){s2.add(r.prompt_id)});window.PVfavs=s2;paintStars();
   }).catch(function(){window.PVfavs=new Set()});
 }
-function openLoginM(){$('loginErr').style.display='none';$('loginBack').classList.add('open')}
+function openLoginM(){$('loginErr').style.display='none';showLoginPane('login');$('loginBack').classList.add('open')}
 function openSignupM(){$('signupErr').style.display='none';$('signupOk').style.display='none';$('signupBack').classList.add('open')}
 $('navLogin').onclick=openLoginM;$('navSignup').onclick=openSignupM;
 $('navLogout').onclick=logout;
 $('navMembers').onclick=function(){location.href='members.html'};
+function showLoginPane(w){$('loginFields').style.display=w==='login'?'':'none';$('resetFields').style.display=w==='reset'?'':'none';$('newpassFields').style.display=w==='newpass'?'':'none';$('loginTitle').textContent=w==='reset'?'Reset password':w==='newpass'?'New password':'Log in'}
+$('forgotLink').onclick=function(e){e.preventDefault();$('resetErr').style.display='none';$('resetOk').style.display='none';showLoginPane('reset')};
+$('resetBack').onclick=function(){showLoginPane('login')};
+$('newpassClose').onclick=closeModals;
+$('doReset').onclick=function(){
+  var em=$('r_email').value.trim(),err=$('resetErr'),ok=$('resetOk');
+  err.style.display='none';ok.style.display='none';
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err.textContent='Enter a valid email address.';err.style.display='block';return}
+  $('doReset').disabled=true;
+  api('/auth/v1/recover','POST',JSON.stringify({email:em}))
+  .then(function(){ok.textContent='Reset link sent! Check your inbox (and spam folder).';ok.style.display='block'})
+  .catch(function(e){err.textContent='Could not send: '+e.message;err.style.display='block'})
+  .finally(function(){$('doReset').disabled=false});
+};
+$('doNewpass').onclick=function(){
+  var pw=$('n_pass').value,err=$('newpassErr');
+  err.style.display='none';
+  if(!pw||pw.length<6){err.textContent='Password must be at least 6 characters.';err.style.display='block';return}
+  $('doNewpass').disabled=true;
+  api('/auth/v1/user','PUT',JSON.stringify({password:pw}))
+  .then(function(){$('n_pass').value='';closeModals();boot()})
+  .catch(function(e){err.textContent='Could not update: '+e.message;err.style.display='block'})
+  .finally(function(){$('doNewpass').disabled=false});
+};
 $('doLogin').onclick=function(){
   var em=$('a_email').value.trim(),pw=$('a_pass').value,err=$('loginErr');
   err.style.display='none';
@@ -251,7 +275,7 @@ $('doSignup').onclick=function(){
   if(!em||pw.length<6){err.textContent='Enter a valid email and a password of at least 6 characters.';err.style.display='block';return}
   $('doSignup').disabled=true;
   api('/auth/v1/signup','POST',JSON.stringify({email:em,password:pw}))
-  .then(function(){ok.textContent='Account created! Check your email for the confirmation link, then log in.';ok.style.display='block';$('s_pass').value=''})
+  .then(function(j){$('s_pass').value='';if(j&&j.access_token){token=j.access_token;sessionStorage.setItem('pv_admin_token',token);closeModals();boot()}else{ok.textContent='Account created! You can now log in.';ok.style.display='block'}})
   .catch(function(e){err.textContent='Signup failed: '+e.message;err.style.display='block'})
   .finally(function(){$('doSignup').disabled=false});
 };
@@ -262,8 +286,11 @@ function boot(){
     var uid=null;try{uid=JSON.parse(atob(token.split('.')[1])).sub}catch(e){}
     if(em&&em===ADMIN_EMAIL.toLowerCase()){setViewer({admin:true,email:em,uid:uid});loadFavs(uid);window.PVreload();return}
     if(!uid){window.PVfavs=new Set();setViewer({member:true,plan:'free'});window.PVreload();return}
-    api('/rest/v1/profiles?select=plan&id=eq.'+uid,'GET').then(function(rr){
-      setViewer({member:true,plan:((rr&&rr[0]&&rr[0].plan)||'free'),email:em,uid:uid});loadFavs(uid);window.PVreload();
+    api('/rest/v1/rpc/downgrade_expired_plan','POST','{}').catch(function(){}).then(function(){
+      return api('/rest/v1/profiles?select=plan,banned&id=eq.'+uid,'GET')}).then(function(rr){
+      var prof=(rr&&rr[0])||{};
+      if(prof.banned){token='';sessionStorage.removeItem('pv_admin_token');window.PVfavs=new Set();setViewer({guest:true});window.PVreload();showLoginPane('login');$('loginErr').textContent='Your account has been suspended.';$('loginErr').style.display='block';$('loginBack').classList.add('open');return}
+      setViewer({member:true,plan:(prof.plan||'free'),email:em,uid:uid});loadFavs(uid);window.PVreload();
     }).catch(function(){window.PVfavs=new Set();setViewer({member:true,plan:'free',uid:uid});window.PVreload()});
   }).catch(function(){token='';sessionStorage.removeItem('pv_admin_token');window.PVfavs=new Set();setViewer({guest:true});window.PVreload()});
 }
@@ -379,6 +406,9 @@ $('paySubmit').onclick=function(){
   }).catch(function(e){bad((e&&e.message)||'Submission failed. Please try again.')})
   .then(function(){btn.disabled=false;btn.textContent='Submit payment'});
 };
+(function(){var h=location.hash||'';if(h.indexOf('type=recovery')>-1){var m=h.match(/access_token=([^&]+)/);
+if(m&&m[1]){token=decodeURIComponent(m[1]);sessionStorage.setItem('pv_admin_token',token);
+history.replaceState(null,'',location.pathname);showLoginPane('newpass');$('loginBack').classList.add('open');}}})();
 boot();
 })();</script>
 </body></html>
