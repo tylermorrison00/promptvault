@@ -48,7 +48,7 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 <!-- LOGIN -->
 <div class="card" id="loginView">
 <h2>Admin login</h2>
-<p class="sub">Sirf tumhara account yahan login kar sakta hai.</p>
+<p class="sub">Only your account can log in here.</p>
 <label for="email">Email</label>
 <input type="email" id="email" autocomplete="username" placeholder="tumhara@email.com">
 <label for="password">Password</label>
@@ -60,8 +60,8 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 <!-- APP -->
 <div id="appView" class="hidden">
 <div class="card">
-<h2 id="formTitle">Naya prompt add karo</h2>
-<p class="sub">Save karte hi ye site pe live ho jayega.</p>
+<h2 id="formTitle">Add new prompt</h2>
+<p class="sub">It goes live on the site as soon as you save.</p>
 <div class="row">
 <div><label for="f_cat">Section</label>
 <select id="f_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div>
@@ -71,14 +71,14 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 <label for="f_title">Title</label>
 <input type="text" id="f_title" placeholder="e.g. Cinematic Scene Builder">
 <label for="f_prompt">Prompt text</label>
-<textarea id="f_prompt" placeholder="Poora prompt yahan likho…"></textarea>
+<textarea id="f_prompt" placeholder="Write the full prompt here…"></textarea>
 <label for="f_media">Video / Image / Thumbnail (optional)</label>
 <input type="file" id="f_media" accept="image/*,video/*">
-<div class="hint">TikTok ke liye <b>vertical (9:16)</b> aur YouTube ke liye <b>horizontal (16:9)</b> file lagao — taake poori dikhe, kaate ya black sides ke baghair.</div>
+<div class="hint">Use a <b>vertical (9:16)</b> file for TikTok and <b>horizontal (16:9)</b> for YouTube — so it shows fully, without cropping.</div>
 <img class="mediaPrev" id="mediaPrevImg" alt="">
 <div class="hint" id="mediaHint"></div>
 <div class="row">
-<div><label for="f_order">Order (optional, chhota number pehle)</label>
+<div><label for="f_order">Order (optional, lower number shows first)</label>
 <input type="number" id="f_order" value="0"></div>
 </div>
 <button class="btn" id="saveBtn" type="button">Save prompt</button>
@@ -87,7 +87,7 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 </div>
 
 <div class="card">
-<h2>Tumhare prompts</h2>
+<h2>Your prompts</h2>
 <p class="sub" id="countLine"></p>
 <div class="plist" id="plist"></div>
 </div>
@@ -119,15 +119,15 @@ function setLoggedIn(yes){
 }
 $('loginBtn').onclick=function(){
   hideMsg();var em=$('email').value.trim(),pw=$('password').value;
-  if(!em||!pw){showErr($('loginErr'),'Email aur password dono likho.');return}
+  if(!em||!pw){showErr($('loginErr'),'Enter both email and password.');return}
   $('loginBtn').disabled=true;
   api('/auth/v1/token?grant_type=password','POST',JSON.stringify({email:em,password:pw}))
-  .then(function(j){token=j.access_token;return api('/auth/v1/user','GET').then(function(u){if(String(u.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()){token='';sessionStorage.removeItem('pv_admin_token');throw new Error('Ye page sirf admin ke liye hai. Members main site se log in karein.')} sessionStorage.setItem('pv_admin_token',token);$('password').value='';setLoggedIn(true)})})
-  .catch(function(e){showErr($('loginErr'),'Login nahi hua: '+e.message+'. (Supabase > Authentication > Users mein apna user bana lo.)')})
+  .then(function(j){token=j.access_token;return api('/auth/v1/user','GET').then(function(u){if(String(u.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()){token='';sessionStorage.removeItem('pv_admin_token');throw new Error('This page is for the admin only.')} sessionStorage.setItem('pv_admin_token',token);$('password').value='';setLoggedIn(true)})})
+  .catch(function(e){showErr($('loginErr'),'Login failed: '+e.message)})
   .finally(function(){$('loginBtn').disabled=false});
 };
 $('logoutBtn').onclick=function(){token='';sessionStorage.removeItem('pv_admin_token');editingId=null;setLoggedIn(false)};
-function resetForm(){$('formTitle').textContent='Naya prompt add karo';['f_title','f_prompt'].forEach(function(i){$(i).value=''});
+function resetForm(){$('formTitle').textContent='Add new prompt';['f_title','f_prompt'].forEach(function(i){$(i).value=''});
   $('f_cat').value='tiktok';$('f_access').value='free';$('f_media').value='';$('f_order').value='0';
   $('mediaPrevImg').style.display='none';$('mediaHint').textContent='';$('cancelBtn').classList.add('hidden');
   editingId=null;editingMedia=null}
@@ -149,7 +149,7 @@ function mediaPath(url){var i=(url||'').indexOf('/prompt-media/');return i>-1?ur
 $('saveBtn').onclick=function(){
   hideMsg();
   var title=$('f_title').value.trim(),prompt=$('f_prompt').value.trim();
-  if(!title||!prompt){showErr($('formErr'),'Title aur prompt text dono zaroori hain.');return}
+  if(!title||!prompt){showErr($('formErr'),'Title and prompt text are both required.');return}
   $('saveBtn').disabled=true;
   var file=$('f_media').files[0];
   var mediaPromise=file?uploadMedia(file):Promise.resolve(editingMedia?{url:editingMedia,type:mediaTypeOf(editingMedia)}:null);
@@ -162,16 +162,16 @@ $('saveBtn').onclick=function(){
     return editingId?api('/rest/v1/prompts?id=eq.'+editingId,'PATCH',JSON.stringify(row))
                     :api('/rest/v1/prompts','POST',JSON.stringify(row));
   }).then(function(){
-    var ok=$('formOk');ok.textContent=editingId?'Prompt update ho gaya.':'Naya prompt live ho gaya.';ok.style.display='block';
+    var ok=$('formOk');ok.textContent=editingId?'Prompt updated.':'New prompt is live.';ok.style.display='block';
     resetForm();loadList();
-  }).catch(function(e){showErr($('formErr'),'Save nahi hua: '+e.message)})
+  }).catch(function(e){showErr($('formErr'),'Could not save: '+e.message)})
   .finally(function(){$('saveBtn').disabled=false});
 };
 function loadList(){
   api('/rest/v1/prompts?select=*&order=sort_order.asc,created_at.desc','GET').then(function(rows){
     $('countLine').textContent=rows.length+' prompt(s)';
     var pl=$('plist');pl.innerHTML='';
-    if(!rows.length){pl.innerHTML='<p class="sub">Abhi koi prompt nahi — pehla add karo.</p>';return}
+    if(!rows.length){pl.innerHTML='<p class="sub">No prompts yet — add the first one.</p>';return}
     rows.forEach(function(p){
       var d=document.createElement('div');d.className='prow';
       d.innerHTML='<div class="info"><div class="t"></div><div class="m"></div></div>'
@@ -185,22 +185,22 @@ function loadList(){
       d.querySelector('[data-act=del]').onclick=function(){delPrompt(p)};
       pl.appendChild(d);
     });
-  }).catch(function(e){$('countLine').textContent='Load nahi hua: '+e.message});
+  }).catch(function(e){$('countLine').textContent='Could not load: '+e.message});
 }
 function startEdit(p){
   editingId=p.id;editingMedia=p.media_url||null;
-  $('formTitle').textContent='Prompt edit karo';var ec=String(p.category||'').toLowerCase();$('f_cat').value=(ec==='youtube'||ec==='niche')?'youtube':'tiktok';
+  $('formTitle').textContent='Edit prompt';var ec=String(p.category||'').toLowerCase();$('f_cat').value=(ec==='youtube'||ec==='niche')?'youtube':'tiktok';
   $('f_access').value=p.is_pro?'pro':'free';$('f_title').value=p.title;
   $('f_prompt').value=p.prompt_text;$('f_order').value=p.sort_order||0;$('f_media').value='';
-  if(p.media_url&&p.media_type==='image'){$('mediaPrevImg').src=p.media_url;$('mediaPrevImg').style.display='block';$('mediaHint').textContent='Pehli file lagi hui hai — nayi select karoge to replace ho jayegi.'}
-  else{$('mediaPrevImg').style.display='none';$('mediaHint').textContent=p.media_url?'Pehli video lagi hui hai — nayi select karoge to replace ho jayegi.':''}
+  if(p.media_url&&p.media_type==='image'){$('mediaPrevImg').src=p.media_url;$('mediaPrevImg').style.display='block';$('mediaHint').textContent='A file is already attached — selecting a new one will replace it.'}
+  else{$('mediaPrevImg').style.display='none';$('mediaHint').textContent=p.media_url?'A video is already attached — selecting a new one will replace it.':''}
   $('cancelBtn').classList.remove('hidden');hideMsg();window.scrollTo({top:0,behavior:'smooth'});
 }
 function delPrompt(p){
-  if(!confirm('"'+p.title+'" delete kar dun?'))return;
+  if(!confirm('Delete "'+p.title+'"?'))return;
   api('/rest/v1/prompts?id=eq.'+p.id,'DELETE')
     .then(function(){return deleteMedia(mediaPath(p.media_url))})
-    .then(loadList).catch(function(e){alert('Delete nahi hua: '+e.message)});
+    .then(loadList).catch(function(e){alert('Could not delete: '+e.message)});
 }
 if(token){api('/rest/v1/prompts?select=id&limit=1','GET').then(function(){setLoggedIn(true)}).catch(function(){setLoggedIn(false)})}
 })();
