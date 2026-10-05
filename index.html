@@ -246,7 +246,7 @@ function delRow(p){
   api('/rest/v1/prompts?id=eq.'+p.id,'DELETE').then(function(){return deleteMedia(p.media_url)}).then(function(){window.PVreload()}).catch(function(e){alert('Could not delete: '+e.message)});
 }
 /* ---- easypaisa payment flow ---- */
-var EMAILJS={key:'PASTE_EMAILJS_PUBLIC_KEY',service:'PASTE_EMAILJS_SERVICE_ID',template:'PASTE_EMAILJS_TEMPLATE_ID'};
+var EMAILJS={key:'Vhv0YKlIcGm-znf2j',service:'service_n3ap60c',template:'template_9rj92ip'};
 var PAY_PLAN='basic',PAY_PRICES={basic:'Rs 499',pro:'Rs 999'};
 window.openPay=function(plan){PAY_PLAN=plan;
   $('payTitle').textContent='Subscribe \u2014 '+(plan==='pro'?'Pro':'Basic');
