@@ -63,8 +63,8 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 <h2 id="formTitle">Naya prompt add karo</h2>
 <p class="sub">Save karte hi ye site pe live ho jayega.</p>
 <div class="row">
-<div><label for="f_cat">Category</label>
-<select id="f_cat"><option value="ai-video">AI video prompts</option><option value="niche">Niche prompt packs</option></select></div>
+<div><label for="f_cat">Section</label>
+<select id="f_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div>
 <div><label for="f_access">Access</label>
 <select id="f_access"><option value="free">Free</option><option value="pro">Pro (members)</option></select></div>
 </div>
@@ -74,6 +74,7 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 <textarea id="f_prompt" placeholder="Poora prompt yahan likho…"></textarea>
 <label for="f_media">Video / Image / Thumbnail (optional)</label>
 <input type="file" id="f_media" accept="image/*,video/*">
+<div class="hint">TikTok ke liye <b>vertical (9:16)</b> aur YouTube ke liye <b>horizontal (16:9)</b> file lagao — taake poori dikhe, kaate ya black sides ke baghair.</div>
 <img class="mediaPrev" id="mediaPrevImg" alt="">
 <div class="hint" id="mediaHint"></div>
 <div class="row">
@@ -126,7 +127,7 @@ $('loginBtn').onclick=function(){
 };
 $('logoutBtn').onclick=function(){token='';sessionStorage.removeItem('pv_admin_token');editingId=null;setLoggedIn(false)};
 function resetForm(){$('formTitle').textContent='Naya prompt add karo';['f_title','f_prompt'].forEach(function(i){$(i).value=''});
-  $('f_cat').value='ai-video';$('f_access').value='free';$('f_media').value='';$('f_order').value='0';
+  $('f_cat').value='tiktok';$('f_access').value='free';$('f_media').value='';$('f_order').value='0';
   $('mediaPrevImg').style.display='none';$('mediaHint').textContent='';$('cancelBtn').classList.add('hidden');
   editingId=null;editingMedia=null}
 $('cancelBtn').onclick=resetForm;
@@ -177,7 +178,8 @@ function loadList(){
         +'<div class="acts"><button class="btn small ghost" data-act="edit">Edit</button>'
         +'<button class="btn danger" data-act="del">Delete</button></div>';
       d.querySelector('.t').textContent=p.title;
-      d.querySelector('.m').textContent=(p.category==='niche'?'Niche pack':'AI video')+(p.media_url?' · media':'')+' · '+new Date(p.created_at).toLocaleDateString();
+      var cn=String(p.category||'').toLowerCase();cn=(cn==='youtube'||cn==='niche')?'YouTube':'TikTok';
+      d.querySelector('.m').textContent=cn+(p.media_url?' · media':'')+' · '+new Date(p.created_at).toLocaleDateString();
       d.querySelector('[data-act=edit]').onclick=function(){startEdit(p)};
       d.querySelector('[data-act=del]').onclick=function(){delPrompt(p)};
       pl.appendChild(d);
@@ -186,7 +188,7 @@ function loadList(){
 }
 function startEdit(p){
   editingId=p.id;editingMedia=p.media_url||null;
-  $('formTitle').textContent='Prompt edit karo';$('f_cat').value=p.category;
+  $('formTitle').textContent='Prompt edit karo';var ec=String(p.category||'').toLowerCase();$('f_cat').value=(ec==='youtube'||ec==='niche')?'youtube':'tiktok';
   $('f_access').value=p.is_pro?'pro':'free';$('f_title').value=p.title;
   $('f_prompt').value=p.prompt_text;$('f_order').value=p.sort_order||0;$('f_media').value='';
   if(p.media_url&&p.media_type==='image'){$('mediaPrevImg').src=p.media_url;$('mediaPrevImg').style.display='block';$('mediaHint').textContent='Pehli file lagi hui hai — nayi select karoge to replace ho jayegi.'}
