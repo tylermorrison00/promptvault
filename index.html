@@ -126,7 +126,7 @@ function setViewer(v){
 function logout(){token='';sessionStorage.removeItem('pv_admin_token');setViewer({guest:true});window.PVreload()}
 function closeModals(){['loginBack','signupBack','formBack'].forEach(function(i){$(i).classList.remove('open')})}
 ['loginBack','signupBack','formBack'].forEach(function(i){$(i).addEventListener('click',function(e){if(e.target===$(i))closeModals()})});
-$('loginClose').onclick=closeModals;$('signupClose').onclick=closeModals;$('formClose').onclick=closeModals;$('membersClose').onclick=closeModals;
+$('loginClose').onclick=closeModals;$('signupClose').onclick=closeModals;$('formClose').onclick=closeModals;
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModals()});
 $('adminLink').onclick=function(){if(window.PVviewer&&(window.PVviewer.admin||window.PVviewer.member)){logout();return}$('loginErr').style.display='none';$('loginBack').classList.add('open');setTimeout(function(){$('a_email').focus()},60)};
 function openLoginM(){$('loginErr').style.display='none';$('loginBack').classList.add('open')}
