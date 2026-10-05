@@ -69,7 +69,7 @@ function cardHTML(p){
     ?'<video src="'+esc(p.media_url)+'" controls preload="metadata" playsinline></video>'
     :'<img src="'+esc(p.media_url)+'" alt="'+esc(p.title)+'" loading="lazy">')+'</div>'}
   var body,foot;
-  if(pro&&!(window.PVviewer&&(window.PVviewer.admin||window.PVviewer.isPro))){body='<div class="preview">This is a Pro member prompt. Log in as a member to unlock the full template.</div>';
+  if(pro&&!(window.PVviewer&&(window.PVviewer.admin||window.PVviewer.plan==='pro'))){body='<div class="preview">This is a Pro member prompt. Log in as a member to unlock the full template.</div>';
     foot='<span class="usage">'+usage+'</span><span class="unlock">Membership required</span>'}
   else{var full=p.prompt_text||'',trunc=full.length>150?full.slice(0,150).replace(/\s+\S*$/,'')+'…':full;
     body='<div class="preview" data-prompt="'+esc(full)+'">'+esc(trunc)+'</div>';
@@ -160,10 +160,10 @@ function boot(){
     var em=String(u.email||'').toLowerCase();
     if(em&&em===ADMIN_EMAIL.toLowerCase()){setViewer({admin:true,email:em});window.PVreload();return}
     var uid=null;try{uid=JSON.parse(atob(token.split('.')[1])).sub}catch(e){}
-    if(!uid){setViewer({member:true,isPro:false});window.PVreload();return}
-    api('/rest/v1/profiles?select=is_pro&id=eq.'+uid,'GET').then(function(rr){
-      setViewer({member:true,isPro:!!(rr&&rr[0]&&rr[0].is_pro),email:em});window.PVreload();
-    }).catch(function(){setViewer({member:true,isPro:false});window.PVreload()});
+    if(!uid){setViewer({member:true,plan:'free'});window.PVreload();return}
+    api('/rest/v1/profiles?select=plan&id=eq.'+uid,'GET').then(function(rr){
+      setViewer({member:true,plan:((rr&&rr[0]&&rr[0].plan)||'free'),email:em});window.PVreload();
+    }).catch(function(){setViewer({member:true,plan:'free'});window.PVreload()});
   }).catch(function(){token='';sessionStorage.removeItem('pv_admin_token');setViewer({guest:true});window.PVreload()});
 }
 document.addEventListener('pv-rendered',function(){
