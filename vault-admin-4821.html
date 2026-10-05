@@ -97,6 +97,7 @@ textarea{min-height:130px;resize:vertical;font-family:ui-monospace,monospace;fon
 <script>(function(){
 var SB_URL="https://vfyuebkdkxhdrlduqxng.supabase.co";
 var SB_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeXVlYmtka3hoZHJsZHVxeG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExOTI1NDQsImV4cCI6MjEwNjc2ODU0NH0.RY-VU33zwySGKmPH34pHs72HaxRt9yi4lAhHO9xn7_4";
+var ADMIN_EMAIL="talhamohsin216@gmail.com";
 var token=sessionStorage.getItem('pv_admin_token')||'';
 var editingId=null, editingMedia=null;
 function $(id){return document.getElementById(id)}
@@ -121,7 +122,7 @@ $('loginBtn').onclick=function(){
   if(!em||!pw){showErr($('loginErr'),'Email aur password dono likho.');return}
   $('loginBtn').disabled=true;
   api('/auth/v1/token?grant_type=password','POST',JSON.stringify({email:em,password:pw}))
-  .then(function(j){token=j.access_token;sessionStorage.setItem('pv_admin_token',token);$('password').value='';setLoggedIn(true)})
+  .then(function(j){token=j.access_token;return api('/auth/v1/user','GET').then(function(u){if(String(u.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()){token='';sessionStorage.removeItem('pv_admin_token');throw new Error('Ye page sirf admin ke liye hai. Members main site se log in karein.')} sessionStorage.setItem('pv_admin_token',token);$('password').value='';setLoggedIn(true)})})
   .catch(function(e){showErr($('loginErr'),'Login nahi hua: '+e.message+'. (Supabase > Authentication > Users mein apna user bana lo.)')})
   .finally(function(){$('loginBtn').disabled=false});
 };
