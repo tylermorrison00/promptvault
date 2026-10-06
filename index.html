@@ -87,7 +87,7 @@ input[type=file].filein{border:1px solid var(--line);border-radius:10px;backgrou
 <div class="mrow"><button class="btn" id="payClose" type="button">Cancel</button><button class="btn solid" id="paySubmit" type="button">Submit payment</button></div>
 </div></div><div class="toast" id="toast" role="status">Prompt copied</div>
 <div class="mback" id="loginBack"><div class="modal" role="dialog" aria-label="Log in"><h3 id="loginTitle">Log in</h3><div id="loginFields"><p class="sub">Members and admin log in here.</p><label for="a_email">Email</label><input type="email" id="a_email" autocomplete="username" placeholder="you@email.com"><label for="a_pass">Password</label><input type="password" id="a_pass" autocomplete="current-password" placeholder="••••••••"><div class="merr" id="loginErr"></div><div style="margin:2px 0 12px"><a href="#" id="forgotLink" style="font-size:.82rem;color:var(--accent);font-weight:700;text-decoration:none">Forgot password?</a></div><div class="mrow"><button class="btn primary" id="doLogin" type="button">Log in</button><button class="btn secondary" id="loginClose" type="button">Close</button></div></div><div id="resetFields" style="display:none"><p class="sub">Enter your account email and we will send you a reset link.</p><label for="r_email">Email</label><input type="email" id="r_email" placeholder="you@email.com"><div class="merr" id="resetErr"></div><div class="mok" id="resetOk"></div><div class="mrow"><button class="btn primary" id="doReset" type="button">Send reset link</button><button class="btn secondary" id="resetBack" type="button">Back</button></div></div><div id="newpassFields" style="display:none"><p class="sub">Choose a new password for your account.</p><label for="n_pass">New password</label><input type="password" id="n_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="newpassErr"></div><div class="mrow"><button class="btn primary" id="doNewpass" type="button">Set new password</button><button class="btn secondary" id="newpassClose" type="button">Close</button></div></div></div></div>
-<div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — you will be signed in right away.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="formBack"><div class="modal" role="dialog" aria-label="Prompt editor"><h3 id="formTitle">New prompt</h3><p class="sub">It goes live on the site as soon as you save.</p><div class="mrow2"><div><label for="m_cat">Section</label><select id="m_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div><div><label for="m_access">Access</label><select id="m_access"><option value="free">Free</option><option value="pro">Pro (members)</option></select></div></div><label>Tags</label><div class="tagpick" id="m_tagpick"></div><div class="tagaddrow"><input type="text" id="m_newtag" placeholder="New tag name" maxlength="24"><button class="btn" id="m_addtag" type="button">Add</button></div><label for="m_title">Title</label><div style="display:flex;gap:8px"><input type="text" id="m_title" placeholder="e.g. Cinematic Scene Builder" style="flex:1;min-width:0"><button class="btn" id="suggestTitle" type="button" style="white-space:nowrap;flex:none">✨ Suggest</button></div><label for="m_prompt">Prompt text</label><textarea id="m_prompt" placeholder="Write the full prompt here…"></textarea><label for="m_media">Video / Image / Thumbnail (optional)</label><input type="file" id="m_media" accept="image/*,video/*"><p class="sub" id="mediaNote" style="margin-top:8px"></p><div class="mrow2"><div><label for="m_order">Order (lower number shows first)</label><input type="number" id="m_order" value="0"></div></div><div class="merr" id="formErr"></div><div class="mrow"><button class="btn primary" id="savePrompt" type="button">Save prompt</button><button class="btn secondary" id="formClose" type="button">Cancel</button></div></div></div>
+<div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — you will be signed in right away.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="formBack"><div class="modal" role="dialog" aria-label="Prompt editor"><h3 id="formTitle">New prompt</h3><p class="sub">It goes live on the site as soon as you save.</p><div class="mrow2"><div><label for="m_cat">Section</label><select id="m_cat"><option value="tiktok">TikTok</option><option value="youtube">YouTube</option></select></div><div><label for="m_access">Access</label><select id="m_access"><option value="free">Free</option><option value="pro">Pro (members)</option></select></div></div><label>Tags</label><div class="tagpick" id="m_tagpick"></div><div class="tagaddrow"><input type="text" id="m_newtag" placeholder="New tag name" maxlength="24"><button class="btn" id="m_addtag" type="button">Add</button></div><label for="m_title">Title</label><input type="text" id="m_title" placeholder="e.g. Cinematic Scene Builder"><label for="m_prompt">Prompt text</label><textarea id="m_prompt" placeholder="Write the full prompt here…"></textarea><label for="m_media">Video / Image / Thumbnail (optional)</label><input type="file" id="m_media" accept="image/*,video/*"><p class="sub" id="mediaNote" style="margin-top:8px"></p><div class="mrow2"><div><label for="m_order">Order (lower number shows first)</label><input type="number" id="m_order" value="0"></div></div><div class="merr" id="formErr"></div><div class="mrow"><button class="btn primary" id="savePrompt" type="button">Save prompt</button><button class="btn secondary" id="formClose" type="button">Cancel</button></div></div></div>
 <script>(function(){
 var SB_URL="https://vfyuebkdkxhdrlduqxng.supabase.co";
 var SB_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeXVlYmtka3hoZHJsZHVxeG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExOTI1NDQsImV4cCI6MjEwNjc2ODU0NH0.RY-VU33zwySGKmPH34pHs72HaxRt9yi4lAhHO9xn7_4";
@@ -324,42 +324,6 @@ function renderTagPick(){
     box.appendChild(b);
   });
 }
-function autoTitle(silent){
-  var raw=($('m_prompt').value||'').trim(),err=$('formErr');
-  function bad(m){if(silent)return;err.textContent=m;err.style.display='block'}
-  if(!raw){bad('Pehle prompt text paste karo, phir title suggest hoga.');return}
-  var text=raw.replace(/\s+/g,' '),chunks=[];
-  text.split(/(?<=[.!?])\s+/).forEach(function(sent){
-    sent=(sent||'').trim();if(sent.length<12)return;
-    var parts=sent.split(/[,;]\s*/);
-    if(parts.length>1)parts.forEach(function(p){p=p.trim();if(p.length>12)chunks.push(p)});
-    chunks.push(sent);
-  });
-  function score(s){
-    var sc=0,w=s.split(/\s+/).length;
-    if(/9:16|16:9|720\s*x\s*1280|1280\s*x\s*720|\b720p?\b|\b1080p?\b|\b4k\b|\bfps\b/i.test(s))sc-=6;
-    if(/\d+\s*(second|minute)s?\b/i.test(s))sc-=4;
-    if(/(no\s+[a-z-]+,?\s*){3,}/i.test(s))sc-=4;
-    if(/^\s*(no|without)\b/i.test(s))sc-=3;
-    if(w>28)sc-=2; if(w<5)sc-=2;
-    return sc;
-  }
-  chunks.sort(function(a,b){return score(b)-score(a)});
-  var s=chunks[0]||text.slice(0,120),guard=0,prev='';
-  while(s!==prev&&guard++<5){prev=s;
-    s=s.replace(/^(please\s+)?(create|generate|make|produce|design|write|draw|paint|render|craft|build|show|depict|illustrate)\b\s*/i,'');
-    s=s.replace(/^(a|an|the)\s+/i,'');}
-  s=s.replace(/^(videos?|images?|photos?|pictures?|clips?|scenes?|shots?)\b\s*(of|showing|featuring|with|depicting)\s+/i,'').trim();
-  s=s.replace(/^[\d.\s,%-]*(second|minute)s?\b[^,;.]*[,;]?\s*/i,'');
-  if(s.length<4)s=text.split(/\s+/).slice(0,10).join(' ');
-  s=s.replace(/[\s.:;,-]+$/,'').trim();
-  if(s.length>80)s=s.slice(0,80).replace(/\s+\S*$/,'');
-  s=s.replace(/\s+(in|on|at|by|of|a|an|the|and|to|for|with)$/i,'');
-  if(!s){bad('Title nahi ban saka \u2014 khud likh lo.');return}
-  $('m_title').value=s.charAt(0).toUpperCase()+s.slice(1);
-}
-$('suggestTitle').onclick=function(){autoTitle(false)};
-$('m_prompt').addEventListener('paste',function(){setTimeout(function(){if(!$('m_title').value.trim())autoTitle(true)},60)});
 $('m_addtag').onclick=function(){
   var v=$('m_newtag').value.trim().toLowerCase().replace(/\s+/g,' ');
   if(!v)return;
