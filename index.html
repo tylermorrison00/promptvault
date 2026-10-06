@@ -328,19 +328,24 @@ function autoTitle(silent){
   var raw=($('m_prompt').value||'').trim(),err=$('formErr');
   function bad(m){if(silent)return;err.textContent=m;err.style.display='block'}
   if(!raw){bad('Pehle prompt text paste karo, phir title suggest hoga.');return}
-  var text=raw.replace(/\s+/g,' ');
-  var sents=text.split(/(?<=[.!?])\s+/).map(function(x){return x.trim()}).filter(function(x){return x.length>12});
+  var text=raw.replace(/\s+/g,' '),chunks=[];
+  text.split(/(?<=[.!?])\s+/).forEach(function(sent){
+    sent=(sent||'').trim();if(sent.length<12)return;
+    var parts=sent.split(/[,;]\s*/);
+    if(parts.length>1)parts.forEach(function(p){p=p.trim();if(p.length>12)chunks.push(p)});
+    chunks.push(sent);
+  });
   function score(s){
     var sc=0,w=s.split(/\s+/).length;
-    if(/9:16|16:9|\b720p?\b|\b1080p?\b|\b4k\b|\bfps\b/i.test(s))sc-=6;
+    if(/9:16|16:9|720\s*x\s*1280|1280\s*x\s*720|\b720p?\b|\b1080p?\b|\b4k\b|\bfps\b/i.test(s))sc-=6;
     if(/\d+\s*(second|minute)s?\b/i.test(s))sc-=4;
     if(/(no\s+[a-z-]+,?\s*){3,}/i.test(s))sc-=4;
     if(/^\s*(no|without)\b/i.test(s))sc-=3;
     if(w>28)sc-=2; if(w<5)sc-=2;
     return sc;
   }
-  sents.sort(function(a,b){return score(b)-score(a)});
-  var s=sents[0]||text.slice(0,120),guard=0,prev='';
+  chunks.sort(function(a,b){return score(b)-score(a)});
+  var s=chunks[0]||text.slice(0,120),guard=0,prev='';
   while(s!==prev&&guard++<5){prev=s;
     s=s.replace(/^(please\s+)?(create|generate|make|produce|design|write|draw|paint|render|craft|build|show|depict|illustrate)\b\s*/i,'');
     s=s.replace(/^(a|an|the)\s+/i,'');}
@@ -348,7 +353,7 @@ function autoTitle(silent){
   s=s.replace(/^[\d.\s,%-]*(second|minute)s?\b[^,;.]*[,;]?\s*/i,'');
   if(s.length<4)s=text.split(/\s+/).slice(0,10).join(' ');
   s=s.replace(/[\s.:;,-]+$/,'').trim();
-  if(s.length>70)s=s.slice(0,70).replace(/\s+\S*$/,'');
+  if(s.length>80)s=s.slice(0,80).replace(/\s+\S*$/,'');
   s=s.replace(/\s+(in|on|at|by|of|a|an|the|and|to|for|with)$/i,'');
   if(!s){bad('Title nahi ban saka \u2014 khud likh lo.');return}
   $('m_title').value=s.charAt(0).toUpperCase()+s.slice(1);
