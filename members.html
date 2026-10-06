@@ -50,6 +50,11 @@ a.tbtn{text-decoration:none;display:inline-flex;align-items:center}
 <div id="paylist"></div>
 </div>
 <div class="card">
+<h2>Prompt requests <span class="count" id="reqcount"></span></h2>
+<p class="sub">New prompt ideas from members. Mark done when handled.</p>
+<div id="reqlist"></div>
+</div>
+<div class="card">
 <h2>Members</h2>
 <p class="sub">Set each member's plan — Free, Basic (30 days or permanent), or Pro (30 days or permanent). Paste an email in the search to find a member instantly.</p>
 <label for="q">Search by email</label>
@@ -87,6 +92,7 @@ function load(){
     allRows=rows||[];render();
   }).catch(function(e){$('list').innerHTML='<div class="empty">Could not load: '+e.message+'</div>'});
   api('/rest/v1/payments?select=*&status=eq.pending&order=created_at.desc','GET').then(renderPay).catch(function(){});
+  api('/rest/v1/prompt_requests?select=*&status=eq.pending&order=created_at.desc','GET').then(renderReq).catch(function(){});
 }
 function renderPay(rows){
   rows=rows||[];
@@ -103,6 +109,25 @@ function renderPay(rows){
     var b=document.createElement('button');b.className='tbtn';b.type='button';b.textContent='Mark done';
     b.onclick=function(){b.disabled=true;
       api('/rest/v1/payments?id=eq.'+p.id,'PATCH',JSON.stringify({status:'done'}))
+      .then(load).catch(function(e){alert(e.message);b.disabled=false})};
+    d.appendChild(b);L.appendChild(d);
+  });
+}
+function renderReq(rows){
+  rows=rows||[];
+  $('reqcount').textContent=rows.length?('('+rows.length+' pending)'):'';
+  var L=$('reqlist');L.innerHTML='';
+  if(!rows.length){L.innerHTML='<div class="empty">No pending requests.</div>';return}
+  rows.forEach(function(r){
+    var d=document.createElement('div');d.className='mrow';
+    var em=document.createElement('div');em.className='em';
+    em.textContent=(r.email||'member')+' \u2014 '+r.req_text;d.appendChild(em);
+    var dt=document.createElement('div');dt.className='dt';try{dt.textContent=new Date(r.created_at).toLocaleString()}catch(e){}d.appendChild(dt);
+    var a=document.createElement('a');a.className='tbtn';a.textContent='Link';a.href=r.link;a.target='_blank';a.rel='noopener';d.appendChild(a);
+    var f=document.createElement('a');f.className='tbtn';f.textContent='File';f.href=r.file_url;f.target='_blank';f.rel='noopener';d.appendChild(f);
+    var b=document.createElement('button');b.className='tbtn';b.type='button';b.textContent='Mark done';
+    b.onclick=function(){b.disabled=true;
+      api('/rest/v1/prompt_requests?id=eq.'+r.id,'PATCH',JSON.stringify({status:'done'}))
       .then(load).catch(function(e){alert(e.message);b.disabled=false})};
     d.appendChild(b);L.appendChild(d);
   });
