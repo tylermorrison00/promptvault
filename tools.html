@@ -1,26 +1,105 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="color-scheme" content="dark" /><meta name="theme-color" content="#07110e" /><link rel="icon" href="data:," /><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" /><title>AI Tools — PromptVault</title><meta name="description" content="The AI tools actually worth using for TikTok and YouTube creators — video, image, voice and editing. Free for everyone." /><meta property="og:type" content="website" /><meta property="og:title" content="AI Tools — PromptVault" /><meta property="og:description" content="The AI tools actually worth using for TikTok and YouTube creators — video, image, voice and editing. Free for everyone." /><meta property="og:url" content="https://promptvault-tyler-s-move.vercel.app/tools.html" /><meta name="twitter:card" content="summary" /><link rel="stylesheet" href="styles.css"></style> <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script> </head><body><nav aria-label="Primary navigation"><div class="navin"><a href="index.html" class="navlabel logo" style="text-decoration:none">ToolVault</a><div class="navlinks"><button class="hamburger" id="hamburger" type="button" aria-label="Menu"><span></span><span></span><span></span></button><div class="menupanel" id="menupanel"><a href="index.html">Library</a><a href="index.html#pricing">Pricing</a><a href="index.html#faq">FAQ</a><button id="navRequest" class="navbtn" type="button" onclick="location.href='index.html#request'">Request a Prompt</button></div><span id="navAuth"><button id="navLogin" class="navbtn" type="button">Log in</button><button id="navSignup" class="navbtn solid" type="button">Sign up</button><button id="navMembers" class="navbtn hidden" type="button">Members</button><button id="navLogout" class="navbtn hidden" type="button">Log out</button></span><button class="theme" id="theme" aria-label="Change color theme" title="Change color theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.8 2-1.7 0-.7-.5-1-1-1.4-.6-.5-1.2-.9-1.2-1.9 0-1.2 1-2 2.2-2H16a5 5 0 0 0 5-5c0-2.9-4-5-9-5Z"/><circle cx="7.5" cy="11.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="7.5" r="1.3" fill="currentColor" stroke="none"/></svg></button><a class="wachannel" id="waChannel" href="https://whatsapp.com/channel/0029VbCsj1qDp2QGXs1fdQ3F" target="_blank" rel="noopener" aria-label="WhatsApp channel" title="WhatsApp channel"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="watext">WhatsApp channel</span></a></div></div></nav><main id="main"><section class="hero"><div class="container" style="text-align:center"><h1 style="margin-left:auto;margin-right:auto">AI tools I actually use.</h1><p class="herocopy" style="margin-left:auto;margin-right:auto">Tested, working, worth your time. Free for everyone.</p></div></section><section class="section" id="tools"><div class="container"><div class="sectionhead centered"><h2>Every tool, one place.</h2><p>My complete automation toolkit &mdash; every tool marked free or paid. I sell nothing here; paid tools are billed on their official websites.</p></div><div><button id="addToolBtn" class="btn primary" type="button" style="display:none;margin:0 0 16px">+ Add tool</button></div><div class="promptgrid" id="toolgrid"></div></div></section></main><div class="fabwrap"><div class="fabmenu" id="fabMenu" hidden><a class="fabitem" href="index.html#library"><span class="fic">◈</span><span>Prompts<small>prompt library</small></span></a><a class="fabitem" href="niches.html"><span class="fic">🔥</span><span>Niches<small>trending niches</small></span></a><a class="fabitem active" href="tools.html"><span class="fic">⚙</span><span>AI Tools<small>free for all</small></span></a></div><button class="fab" id="fabBtn" aria-label="Switch page">✦</button></div><div class="mback" id="loginBack"><div class="modal" role="dialog" aria-label="Log in"><h3 id="loginTitle">Log in</h3><div id="loginFields"><p class="sub">Members and admin log in here.</p><label for="a_email">Email</label><input type="email" id="a_email" autocomplete="username" placeholder="you@email.com"><label for="a_pass">Password</label><input type="password" id="a_pass" autocomplete="current-password" placeholder="••••••••"><div class="merr" id="loginErr"></div><div style="margin:2px 0 12px"><a href="#" id="forgotLink" style="font-size:.82rem;color:var(--accent);font-weight:700;text-decoration:none">Forgot password?</a></div><div class="mrow"><button class="btn primary" id="doLogin" type="button">Log in</button><button class="btn secondary" id="loginClose" type="button">Close</button></div></div><div id="resetFields" style="display:none"><p class="sub">Enter your account email and we will send you a reset link.</p><label for="r_email">Email</label><input type="email" id="r_email" placeholder="you@email.com"><div class="merr" id="resetErr"></div><div class="mok" id="resetOk"></div><div class="mrow"><button class="btn primary" id="doReset" type="button">Send reset link</button><button class="btn secondary" id="resetBack" type="button">Back</button></div></div><div id="newpassFields" style="display:none"><p class="sub">Choose a new password for your account.</p><label for="n_pass">New password</label><input type="password" id="n_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="newpassErr"></div><div class="mrow"><button class="btn primary" id="doNewpass" type="button">Set new password</button><button class="btn secondary" id="newpassClose" type="button">Close</button></div></div></div></div><div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — you will be signed in right away.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="toolFormBack"><div class="modal" role="dialog" aria-label="Tool editor"><h3 id="toolFormTitle">New tool</h3><p class="sub">It goes live on the site as soon as you save.</p><label for="t_name">Tool name</label><input type="text" id="t_name" maxlength="60" placeholder="e.g. Veo 3"><div class="mrow2"><div><label for="t_cat">Category</label><select id="t_cat"><option value="video">Video</option><option value="image">Image</option><option value="voice">Voice</option><option value="editing">Editing</option><option value="other">Other</option></select></div><div><label for="t_order">Sort order</label><input type="number" id="t_order" value="0"></div></div><label for="t_desc">Description</label><textarea id="t_desc" rows="3" maxlength="300" placeholder="What it does and why it's worth using"></textarea><label for="t_url">Website URL</label><input type="url" id="t_url" maxlength="300" placeholder="https://..."><div class="merr" id="toolFormErr"></div><div class="mrow"><button class="btn primary" id="saveTool" type="button">Save tool</button><button class="btn secondary" id="toolFormClose" type="button">Close</button></div></div></div> <script src="site.js"></script> <script>
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="color-scheme" content="dark" /><meta name="theme-color" content="#07110e" /><link rel="icon" href="data:," /><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" /><title>AI Tools — PromptVault</title><meta name="description" content="The AI tools actually worth using for TikTok and YouTube creators — video, image, voice and editing. Free for everyone." /><meta property="og:type" content="website" /><meta property="og:title" content="AI Tools — PromptVault" /><meta property="og:description" content="The AI tools actually worth using for TikTok and YouTube creators — video, image, voice and editing. Free for everyone." /><meta property="og:url" content="https://promptvault-tyler-s-move.vercel.app/tools.html" /><meta name="twitter:card" content="summary" /><link rel="stylesheet" href="styles.css"></style> <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script> </head><body><nav aria-label="Primary navigation"><div class="navin"><a href="index.html" class="navlabel logo" style="text-decoration:none">ToolVault</a><div class="navlinks"><button class="hamburger" id="hamburger" type="button" aria-label="Menu"><span></span><span></span><span></span></button><div class="menupanel" id="menupanel"><a href="index.html">Library</a><a href="index.html#pricing">Pricing</a><a href="index.html#faq">FAQ</a><button id="navRequest" class="navbtn" type="button" onclick="location.href='index.html#request'">Request a Prompt</button></div><span id="navAuth"><button id="navLogin" class="navbtn" type="button">Log in</button><button id="navSignup" class="navbtn solid" type="button">Sign up</button><button id="navMembers" class="navbtn hidden" type="button">Members</button><button id="navLogout" class="navbtn hidden" type="button">Log out</button></span><button class="theme" id="theme" aria-label="Change color theme" title="Change color theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.8 2-1.7 0-.7-.5-1-1-1.4-.6-.5-1.2-.9-1.2-1.9 0-1.2 1-2 2.2-2H16a5 5 0 0 0 5-5c0-2.9-4-5-9-5Z"/><circle cx="7.5" cy="11.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="7.5" r="1.3" fill="currentColor" stroke="none"/></svg></button><a class="wachannel" id="waChannel" href="https://whatsapp.com/channel/0029VbCsj1qDp2QGXs1fdQ3F" target="_blank" rel="noopener" aria-label="WhatsApp channel" title="WhatsApp channel"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="watext">WhatsApp channel</span></a></div></div></nav><main id="main"><section class="hero"><div class="container" style="text-align:center"><h1 style="margin-left:auto;margin-right:auto">AI tools I actually use.</h1><p class="herocopy" style="margin-left:auto;margin-right:auto">Tested, working, worth your time. Free for everyone.</p></div></section><section class="section" id="tools"><div class="container"><div class="sectionhead centered"><h2>Every tool, one place.</h2><p>My complete automation toolkit &mdash; every tool marked free or paid. I sell nothing here; paid tools are billed on their official websites.</p></div><div><button id="addToolBtn" class="btn primary" type="button" style="display:none;margin:0 0 16px">+ Add tool</button></div><div class="tools"><label class="searchwrap" aria-label="Search tools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input class="search" id="toolSearch" type="search" placeholder="Search tools..." autocomplete="off"></label><div class="filters" id="toolFilters"><button class="filter active" data-f="all" type="button">All</button><button class="filter" data-f="fav" type="button">Favorites</button><button class="filter" data-f="free" type="button">Free</button><button class="filter" data-f="paid" type="button">Paid</button><span id="toolTagFilters" style="display:contents"></span></div></div><div class="promptgrid" id="toolgrid"></div></div></section></main><div class="fabwrap"><div class="fabmenu" id="fabMenu" hidden><a class="fabitem" href="index.html#library"><span class="fic">◈</span><span>Prompts<small>prompt library</small></span></a><a class="fabitem" href="niches.html"><span class="fic">🔥</span><span>Niches<small>trending niches</small></span></a><a class="fabitem active" href="tools.html"><span class="fic">⚙</span><span>AI Tools<small>free for all</small></span></a></div><button class="fab" id="fabBtn" aria-label="Switch page">✦</button></div><div class="mback" id="loginBack"><div class="modal" role="dialog" aria-label="Log in"><h3 id="loginTitle">Log in</h3><div id="loginFields"><p class="sub">Members and admin log in here.</p><label for="a_email">Email</label><input type="email" id="a_email" autocomplete="username" placeholder="you@email.com"><label for="a_pass">Password</label><input type="password" id="a_pass" autocomplete="current-password" placeholder="••••••••"><div class="merr" id="loginErr"></div><div style="margin:2px 0 12px"><a href="#" id="forgotLink" style="font-size:.82rem;color:var(--accent);font-weight:700;text-decoration:none">Forgot password?</a></div><div class="mrow"><button class="btn primary" id="doLogin" type="button">Log in</button><button class="btn secondary" id="loginClose" type="button">Close</button></div></div><div id="resetFields" style="display:none"><p class="sub">Enter your account email and we will send you a reset link.</p><label for="r_email">Email</label><input type="email" id="r_email" placeholder="you@email.com"><div class="merr" id="resetErr"></div><div class="mok" id="resetOk"></div><div class="mrow"><button class="btn primary" id="doReset" type="button">Send reset link</button><button class="btn secondary" id="resetBack" type="button">Back</button></div></div><div id="newpassFields" style="display:none"><p class="sub">Choose a new password for your account.</p><label for="n_pass">New password</label><input type="password" id="n_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="newpassErr"></div><div class="mrow"><button class="btn primary" id="doNewpass" type="button">Set new password</button><button class="btn secondary" id="newpassClose" type="button">Close</button></div></div></div></div><div class="mback" id="signupBack"><div class="modal" role="dialog" aria-label="Create account"><h3>Create account</h3><p class="sub">Create your own login — you will be signed in right away.</p><label for="s_email">Email</label><input type="email" id="s_email" autocomplete="email" placeholder="you@email.com"><label for="s_pass">Password</label><input type="password" id="s_pass" autocomplete="new-password" placeholder="Min. 6 characters"><div class="merr" id="signupErr"></div><div class="mok" id="signupOk"></div><div class="mrow"><button class="btn primary" id="doSignup" type="button">Create account</button><button class="btn secondary" id="signupClose" type="button">Close</button></div></div></div><div class="mback" id="toolFormBack"><div class="modal" role="dialog" aria-label="Tool editor"><h3 id="toolFormTitle">New tool</h3><p class="sub">It goes live on the site as soon as you save.</p><label for="t_name">Tool name</label><input type="text" id="t_name" maxlength="60" placeholder="e.g. Veo 3"><label>Access</label><div class="tagpick" id="t_accesspick"><button type="button" class="tchip on" data-acc="free">Free</button><button type="button" class="tchip" data-acc="paid">Paid</button></div><label>Category</label><div class="tagpick" id="t_catpick"></div><div class="tagaddrow"><input type="text" id="t_newcat" placeholder="New category"><button class="btn" id="t_addcat" type="button">Add</button></div><label>Tags</label><div class="tagpick" id="t_tagpick"></div><div class="tagaddrow"><input type="text" id="t_newtag" placeholder="New tag"><button class="btn" id="t_addtag" type="button">Add</button></div><div class="mrow2"><div><label for="t_order">Sort order</label><input type="number" id="t_order" value="0"></div></div><label for="t_desc">Description</label><textarea id="t_desc" rows="3" maxlength="300" placeholder="What it does and why it's worth using"></textarea><label for="t_url">Website URL</label><input type="url" id="t_url" maxlength="300" placeholder="https://..."><div class="merr" id="toolFormErr"></div><div class="mrow"><button class="btn primary" id="saveTool" type="button">Save tool</button><button class="btn secondary" id="toolFormClose" type="button">Close</button></div></div></div> <script src="site.js"></script> <script>
 function paintPricing(){}
 function loadFavs(){}
 
 /* ---------- tools ---------- */
-function toolCardHTML(t){
-  var cat=String(t.category||'other');
-  cat=cat.charAt(0).toUpperCase()+cat.slice(1);
-  return '<article class="promptcard" data-tid="'+t.id+'">'
-  +'<div class="cardmeta"><span class="tag">'+esc(cat)+'</span><span class="access free">FREE</span></div>'
-  +'<h3>'+esc(t.name)+'</h3>'
-  +'<p class="desc">'+esc(t.description||'')+'</p>'
-  +'<div class="cardfoot"><a class="btn primary" style="text-decoration:none;text-align:center;flex:1" href="'+esc(t.url||'#')+'" target="_blank" rel="noopener">Open tool &rarr;</a></div></article>';
+function gTF(){try{return JSON.parse(localStorage.getItem("pv_tf")||"[]")}catch(e){return[]}}
+function iTF(i){return gTF().indexOf(String(i))>=0}
+function tTF(i){var f=gTF(),x=String(i),j=f.indexOf(x);if(j>=0){f.splice(j,1)}else{f.push(x)}try{localStorage.setItem("pv_tf",JSON.stringify(f))}catch(e){}loadTools()}
+function toolCardHTML(o){
+  var P=!!o.is_paid;
+  var tags=(o.tags||[]).filter(function(x){return String(x).trim()});
+  var T=tags.map(function(x){return '<span class="tagchip">'+esc(x)+'</span>'}).join('');
+  var TR=T?'<div class="tagrow">'+T+'</div>':'';
+  var C=o.category?'<span class="tag">'+esc(o.category)+'</span>':'';
+  var starCls=iTF(o.id)?' on':'';
+  var F='<button class="star'+starCls+'" data-tfav="'+o.id+'" type="button">★</button>';
+  var accessHtml=P?'<span class="access">PAID</span>':'<span class="access free">FREE</span>';
+  var html='<article class="promptcard" data-tid="'+o.id+'">';
+  html+='<div class="cardmeta">'+C+accessHtml+'</div>';
+  html+='<h3>'+esc(o.name)+'</h3>';
+  html+=TR;
+  html+='<p class="desc">'+esc(o.description||'')+'</p>';
+  html+='<div class="cardfoot">'+F;
+  html+='<a class="copy" style="text-decoration:none;display:inline-block" href="'+esc(o.url||"#")+'" target="_blank" rel="noopener">Open tool &rarr;</a>';
+  html+='</div></article>';
+  return html;
 }
+
+var toolF="all",toolQ="",toolRows=[];
+var TT=[],TC=[];
+function renderToolTagFilters(){
+  var w=document.getElementById("toolTagFilters");
+  if(!w)return;
+  var seen={},tags=[];
+  toolRows.forEach(function(r){
+    (r.tags||[]).forEach(function(t){
+      t=String(t).trim();var k=t.toLowerCase();
+      if(t&&!seen[k]){seen[k]=1;tags.push(t)}
+    });
+  });
+  tags.sort(function(a,b){return a.toLowerCase().localeCompare(b.toLowerCase())});
+  w.innerHTML=tags.map(function(t){
+    return '<button class="filter" data-f="tag:'+esc(t.toLowerCase())+'" type="button">'+esc(t)+'</button>';
+  }).join('');
+  w.querySelectorAll(".filter").forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});
+      b.classList.add("active");toolF=b.dataset.f;loadTools();
+    };
+  });
+}
+function renderToolCatPick(){
+  var w=document.getElementById("t_catpick");
+  if(!w)return;
+  var seen={},cats=[];
+  toolRows.forEach(function(r){
+    var c=String(r.category||"").trim();
+    if(c&&!seen[c.toLowerCase()]){seen[c.toLowerCase()]=1;cats.push(c)}
+  });
+  w.innerHTML=cats.map(function(c){
+    var on=TC.indexOf(c)>=0?" on":"";
+    return '<button type="button" class="tchip'+on+'" data-cat="'+esc(c)+'">'+esc(c)+'</button>';
+  }).join('');
+  w.querySelectorAll(".tchip").forEach(function(b){
+    b.onclick=function(){
+      var c=b.dataset.cat, i=TC.indexOf(c);
+      if(i>=0){TC.splice(i,1)}else{TC=[c]}
+      renderToolCatPick();
+    };
+  });
+}
+function renderToolTagPick(){
+  var w=document.getElementById("t_tagpick");
+  if(!w)return;
+  w.innerHTML=TT.map(function(t){
+    return '<button type="button" class="tchip on" data-tag="'+esc(t)+'">'+esc(t)+' &#x2715;</button>';
+  }).join('');
+  w.querySelectorAll(".tchip").forEach(function(b){
+    b.onclick=function(){
+      var i=TT.indexOf(b.dataset.tag);
+      if(i>=0){TT.splice(i,1);renderToolTagPick()}
+    };
+  });
+}
+
 function loadTools(){
   var grid=$('toolgrid');if(!grid)return;
   grid.innerHTML='<div class="loadingbox">Loading tools...</div>';
   api('/rest/v1/tools?select=*&order=sort_order.asc,created_at.desc','GET').then(function(rows){
-    rows=rows||[];grid.innerHTML='';
-    if(!rows.length)grid.innerHTML='<div class="loadingbox">No tools yet.</div>';
+    rows=rows||[];toolRows=rows;renderToolTagFilters();grid.innerHTML='';
+    var shown=0;
     rows.forEach(function(t){
+      var isP=!!t.is_paid;
+      if(toolF==="fav"&&!iTF(t.id))return;
+      if(toolF==="free"&&isP)return;
+      if(toolF==="paid"&&!isP)return;
+      if(toolF&&toolF.indexOf("tag:")===0){var tg=toolF.slice(4);if((t.tags||[]).map(function(x){return String(x).toLowerCase()}).indexOf(tg)<0)return;}
+      if(toolQ){var q=toolQ.toLowerCase();var hay=((t.name||"")+" "+(t.description||"")+" "+(t.category||"")+" "+(t.tags||[]).join(" ")).toLowerCase();if(hay.indexOf(q)<0)return;}
+      shown++;
       var d=document.createElement('div');d.innerHTML=toolCardHTML(t);var el=d.firstChild;el._row=t;grid.appendChild(el);
     });
+    if(!shown)grid.innerHTML='<div class="loadingbox">No tools found. Try another filter.</div>';
     if(document.body.classList.contains('admin')){
       Array.prototype.forEach.call(grid.querySelectorAll('.promptcard'),function(card){
         if(card.querySelector('.adminbar')||!card._row)return;
@@ -39,7 +118,14 @@ var editingTool=null;
 function openToolForm(t){
   editingTool=t?t.id:null;
   $('toolFormTitle').textContent=t?'Edit tool':'New tool';
-  $('t_name').value=t?t.name:'';$('t_cat').value=t?(t.category||'video'):'video';
+  $('t_name').value=t?t.name:'';
+  TT=(t&&t.tags)?t.tags.slice():[];
+  TC=t&&t.category?[t.category]:[];
+  var isP=t&&t.is_paid;
+  document.querySelectorAll("#t_accesspick .tchip").forEach(function(b){
+    b.classList.toggle("on",(b.dataset.acc==="paid")===!!isP);
+  });
+  renderToolCatPick();renderToolTagPick();
   $('t_desc').value=t?(t.description||''):'';$('t_url').value=t?(t.url||''):'';
   $('t_order').value=t?(t.sort_order||0):0;
   $('toolFormErr').style.display='none';$('toolFormBack').classList.add('open');
@@ -49,7 +135,9 @@ $('saveTool').onclick=function(){
   var name=$('t_name').value.trim(),err=$('toolFormErr');
   if(!name){err.textContent='Tool name is required.';err.style.display='block';return}
   $('saveTool').disabled=true;
-  var row={name:name,category:$('t_cat').value,description:$('t_desc').value.trim(),url:$('t_url').value.trim(),
+  var accEl=document.querySelector("#t_accesspick .tchip.on");
+  var isPaid=accEl&&accEl.dataset.acc==="paid";
+  var row={name:name,category:TC[0]||"",is_paid:isPaid,tags:TT.slice(),description:$('t_desc').value.trim(),url:$('t_url').value.trim(),
     sort_order:parseInt($('t_order').value||'0',10)};
   var p=editingTool?api('/rest/v1/tools?id=eq.'+editingTool,'PATCH',JSON.stringify(row)):api('/rest/v1/tools','POST',JSON.stringify(row));
   p.then(function(){$('toolFormBack').classList.remove('open');loadTools()})
@@ -61,6 +149,34 @@ function delToolRow(t){
   api('/rest/v1/tools?id=eq.'+t.id,'DELETE').then(function(){loadTools()}).catch(function(e){alert('Could not delete: '+e.message)});
 }
 (function(){var b=$('addToolBtn');if(!b)return;var obs=new MutationObserver(function(){b.style.display=document.body.classList.contains('admin')?'inline-flex':'none'});obs.observe(document.body,{attributes:true,attributeFilter:['class']});b.style.display=document.body.classList.contains('admin')?'inline-flex':'none';b.onclick=function(){openToolForm(null)}})();
+
+// Tool page event handlers
+document.getElementById("toolSearch").addEventListener("input",function(){toolQ=this.value.trim();loadTools()});
+document.querySelectorAll("#toolFilters .filter").forEach(function(b){
+  if(b.closest("#toolTagFilters"))return;
+  b.addEventListener("click",function(){
+    document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});
+    b.classList.add("active");toolF=b.dataset.f;loadTools();
+  });
+});
+document.getElementById("toolgrid").addEventListener("click",function(e){
+  var b=e.target.closest("[data-tfav]");
+  if(b){e.stopPropagation();tTF(b.dataset.tfav)}
+});
+document.querySelectorAll("#t_accesspick .tchip").forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll("#t_accesspick .tchip").forEach(function(x){x.classList.remove("on")});
+    b.classList.add("on");
+  };
+});
+document.getElementById("t_addcat").onclick=function(){
+  var v=document.getElementById("t_newcat").value.trim();
+  if(v){TC=[v];document.getElementById("t_newcat").value="";renderToolCatPick()}
+};
+document.getElementById("t_addtag").onclick=function(){
+  var v=document.getElementById("t_newtag").value.trim();
+  if(v&&TT.indexOf(v)<0){TT.push(v);document.getElementById("t_newtag").value="";renderToolTagPick()}
+};
 
 boot();
 </script> </body></html>

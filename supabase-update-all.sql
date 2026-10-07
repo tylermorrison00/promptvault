@@ -99,8 +99,12 @@ create table if not exists tools (
   description text,
   url text,
   sort_order int not null default 0,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  is_paid boolean not null default false,
+  tags text[] not null default '{}'
 );
+alter table tools add column if not exists is_paid boolean not null default false;
+alter table tools add column if not exists tags text[] not null default '{}';
 alter table tools enable row level security;
 drop policy if exists "public select tools" on tools;
 create policy "public select tools" on tools for select using (true);
