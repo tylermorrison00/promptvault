@@ -21,109 +21,97 @@ window.PVsortTags=function(tags,page){
   });
 };
 
-// Tag drag reorder (admin) - long-press 3s then drag
-window.PVenableTagDrag=function(page,filtersId,attrPrefix){
+// Tag reorder mode (admin) - simple and reliable
+window.PVtagReorderMode={};
+window.PVtoggleTagReorder=function(page,filtersId,attrPrefix){
   var F=document.getElementById(filtersId);
   if(!F)return;
+  var isActive=window.PVtagReorderMode[page];
+  if(isActive){
+    // Exit reorder mode - reload to clean state
+    location.reload();
+    return;
+  }
+  window.PVtagReorderMode[page]=true;
+  // Add reorder buttons to each tag
   var btns=F.querySelectorAll('['+attrPrefix+'^="tag:"]');
-  if(!btns.length)return;
   var tags=[];
   btns.forEach(function(b){tags.push(b.getAttribute(attrPrefix).slice(4))});
-  btns.forEach(function(btn){
-    var pressTimer=null,dragging=false,startX=0,startY=0;
-    function isAdmin(){return document.body.classList.contains('admin')}
-    function startPress(x,y){
-      if(!isAdmin())return;
-      startX=x;startY=y;
-      pressTimer=setTimeout(function(){
-        dragging=true;
-        btn.classList.add('tag-dragging');
-        document.body.classList.add('tag-drag-active');
-        if(navigator.vibrate)try{navigator.vibrate(50)}catch(e){}
-      },3000);
-    }
-    function cancelPress(){
-      if(pressTimer){clearTimeout(pressTimer);pressTimer=null}
-    }
-    function endDrag(x,y){
-      cancelPress();
-      if(!dragging)return;
-      dragging=false;
-      btn.classList.remove('tag-dragging');
-      document.body.classList.remove('tag-drag-active');
-      // Find drop target
-      var el=document.elementFromPoint(x,y);
-      var target=null;
-      if(el){
-        target=el.closest('['+attrPrefix+'^="tag:"]');
-      }
-      if(target&&target!==btn){
-        var allTags=[];
-        F.querySelectorAll('['+attrPrefix+'^="tag:"]').forEach(function(b){
-          allTags.push(b.getAttribute(attrPrefix).slice(4));
-        });
-        var fromIdx=-1,toIdx=-1,tl=btn.getAttribute(attrPrefix).slice(4).toLowerCase();
-        for(var i=0;i<allTags.length;i++){
-          if(allTags[i].toLowerCase()===tl)fromIdx=i;
-          if(allTags[i].toLowerCase()===target.getAttribute(attrPrefix).slice(4).toLowerCase())toIdx=i;
-        }
-        if(fromIdx>=0&&toIdx>=0&&fromIdx!==toIdx){
-          var moved=allTags.splice(fromIdx,1)[0];
-          allTags.splice(toIdx,0,moved);
-          var rows=allTags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
-          window.api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
-            return window.api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
-          }).then(function(){
-            location.reload();
-          }).catch(function(e){alert('Could not save: '+(e&&e.message?e.message:e))});
-        }
-      }
-    }
-    // Touch
-    btn.addEventListener('touchstart',function(e){
-      if(e.touches.length!==1)return;
-      startPress(e.touches[0].clientX,e.touches[0].clientY);
-    },{passive:true});
-    btn.addEventListener('touchmove',function(e){
-      if(!dragging)return;
-      e.preventDefault();
-      var t=e.touches[0];
-      // Visual feedback - move the button slightly
-      btn.style.transform='translate('+(t.clientX-startX)+'px,'+(t.clientY-startY)+'px) scale(1.1)';
-      btn.style.zIndex='9999';
-      btn.style.position='relative';
-    },{passive:false});
-    btn.addEventListener('touchend',function(e){
-      if(dragging){
-        var t=e.changedTouches[0];
-        btn.style.transform='';btn.style.zIndex='';btn.style.position='';
-        endDrag(t.clientX,t.clientY);
-      }else{
-        cancelPress();
-      }
-    });
-    btn.addEventListener('touchcancel',function(){cancelPress();dragging=false;btn.classList.remove('tag-dragging');document.body.classList.remove('tag-drag-active');btn.style.transform='';btn.style.zIndex='';btn.style.position=''});
-    // Mouse (desktop)
-    btn.addEventListener('mousedown',function(e){
-      if(e.button!==0)return;
-      startPress(e.clientX,e.clientY);
-    });
-    btn.addEventListener('mousemove',function(e){
-      if(!dragging)return;
-      btn.style.transform='translate('+(e.clientX-startX)+'px,'+(e.clientY-startY)+'px) scale(1.1)';
-      btn.style.zIndex='9999';
-      btn.style.position='relative';
-    });
-    btn.addEventListener('mouseup',function(e){
-      if(dragging){
-        btn.style.transform='';btn.style.zIndex='';btn.style.position='';
-        endDrag(e.clientX,e.clientY);
-      }else{
-        cancelPress();
-      }
-    });
-    btn.addEventListener('mouseleave',function(){
-      if(!dragging)cancelPress();
-    });
+  btns.forEach(function(b){
+    var tag=b.getAttribute(attrPrefix).slice(4);
+    var wrap=document.createElement('span');
+    wrap.className='pv-reorder-btns';
+    wrap.style.cssText='display:inline-flex;gap:2px;margin-left:4px;vertical-align:middle';
+    var up=document.createElement('button');
+    up.type='button';up.className='filter';up.style.cssText='padding:2px 8px;font-size:13px';
+    up.textContent='↑';up.title='Move left';
+    var dn=document.createElement('button');
+    dn.type='button';dn.className='filter';dn.style.cssText='padding:2px 8px;font-size:13px';
+    dn.textContent='↓';dn.title='Move right';
+    up.onclick=function(e){
+      e.stopPropagation();e.preventDefault();
+      window.PVmoveTagSimple(page,tag,-1);
+    };
+    dn.onclick=function(e){
+      e.stopPropagation();e.preventDefault();
+      window.PVmoveTagSimple(page,tag,1);
+    };
+    wrap.appendChild(up);wrap.appendChild(dn);
+    b.parentNode.insertBefore(wrap,b.nextSibling);
   });
+  // Change the reorder button text to "Done"
+  var rb=document.getElementById('pv-reorder-btn-'+page);
+  if(rb)rb.textContent='Done';
+};
+window.PVmoveTagSimple=function(page,tag,dir){
+  try{
+    var F=null,attrPrefix=null;
+    if(page==='prompts'){F=document.getElementById('filters');attrPrefix='data-filter'}
+    else if(page==='niches'){F=document.getElementById('nicheFilters');attrPrefix='data-f'}
+    else if(page==='tools'){F=document.getElementById('toolTagFilters');attrPrefix='data-f'}
+    if(!F)return;
+    var allTags=[];
+    F.querySelectorAll('['+attrPrefix+'^="tag:"]').forEach(function(b){
+      allTags.push(b.getAttribute(attrPrefix).slice(4));
+    });
+    var idx=-1,tl=String(tag).toLowerCase();
+    for(var i=0;i<allTags.length;i++){
+      if(String(allTags[i]).toLowerCase()===tl){idx=i;break}
+    }
+    if(idx<0)return;
+    var ni=idx+dir;
+    if(ni<0||ni>=allTags.length)return;
+    var tmp=allTags[idx];allTags[idx]=allTags[ni];allTags[ni]=tmp;
+    var rows=allTags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
+    window.api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
+      return window.api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
+    }).then(function(){
+      location.reload();
+    }).catch(function(e){
+      alert('Could not save: '+(e&&e.message?e.message:e));
+    });
+  }catch(err){
+    alert('Error: '+(err&&err.message?err.message:err));
+  }
+};
+window.PVaddReorderButton=function(page,filtersId){
+  // Only for admin
+  if(!document.body.classList.contains('admin'))return;
+  var F=document.getElementById(filtersId);
+  if(!F)return;
+  // Don't add twice
+  if(document.getElementById('pv-reorder-btn-'+page))return;
+  var btn=document.createElement('button');
+  btn.id='pv-reorder-btn-'+page;
+  btn.type='button';
+  btn.className='filter';
+  btn.style.cssText='margin-left:8px;font-size:12px;opacity:.8';
+  btn.textContent='Reorder';
+  btn.title='Reorder tags';
+  btn.onclick=function(e){
+    e.stopPropagation();
+    var attrPrefix=(page==='prompts')?'data-filter':'data-f';
+    window.PVtoggleTagReorder(page,filtersId,attrPrefix);
+  };
+  F.appendChild(btn);
 };
