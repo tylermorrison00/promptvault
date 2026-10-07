@@ -37,7 +37,7 @@ function renderTools(){
     shown++;
     var d=document.createElement('div');d.innerHTML=toolCardHTML(t);var el=d.firstChild;el._row=t;grid.appendChild(el);
   });
-  if(!shown)grid.innerHTML='<div class="loadingbox">No tools found. Try another filter.</div>';
+  if(!shown)(grid.innerHTML='<div class="loadingbox"></div>',grid.firstChild.textContent=(toolF==="trending"?"Not enough data yet on what's trending. Suggest a trend above.":"No tools found. Try another filter."))
   if(document.body.classList.contains('admin')){
     Array.prototype.forEach.call(grid.querySelectorAll('.promptcard'),function(card){
       if(card.querySelector('.adminbar')||!card._row)return;
