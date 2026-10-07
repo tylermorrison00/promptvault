@@ -17,27 +17,7 @@ function toolCardHTML(o){
   html+='<div class="cardmeta"><span style="display:flex;gap:6px;flex-wrap:wrap">'+T+'</span>'+accessHtml+'</div>';
   html+='<h3>'+esc(o.name)+'</h3>';
   html+='<p class="desc">'+esc(o.description||'')+'</p>';
-  html+='<div class="cardfoot">'+F;
-  html+='<a class="copy" style="text-decoration:none;text-align:center;flex:1" href="'+esc(o.url||"#")+'" target="_blank" rel="noopener">Open tool &rarr;</a>';
-  html+='</div></article>';
-  return html;
-}
-function renderTools(){
-  var grid=document.getElementById("toolgrid");
-  if(!grid)return;
-  grid.innerHTML='';
-  var shown=0;
-  toolRows.forEach(function(t){
-    var isP=!!t.is_paid;
-    if(toolF==="fav"&&!iTF(t.id))return;
-    if(toolF==="free"&&isP)return;
-    if(toolF==="paid"&&!isP)return;if(toolF==="trending"&&!(t.trending_until&&new Date(t.trending_until).getTime()>Date.now()))return;
-    if(toolF&&toolF.indexOf("tag:")===0){var tg=toolF.slice(4);if((t.tags||[]).map(function(x){return String(x).toLowerCase()}).indexOf(tg)<0)return;}
-    if(toolQ){var q=toolQ.toLowerCase();var hay=((t.name||"")+" "+(t.description||"")+" "+(t.tags||[]).join(" ")).toLowerCase();if(hay.indexOf(q)<0)return;}
-    shown++;
-    var d=document.createElement('div');d.innerHTML=toolCardHTML(t);var el=d.firstChild;el._row=t;grid.appendChild(el);
-  });
-  if(!shown)grid.innerHTML='<div class="loadingbox">"+(toolF==="trending"?"Nothing trending yet.":"No tools found. Try another filter.")+"</div>';
+  html+='<div class="loadingbox">'+(toolF==="trending"?"Not enough data yet on what's trending. Suggest trend by clicking the button above.":"No tools found. Try another filter.")+'</div>';
   if(document.body.classList.contains('admin')){
     Array.prototype.forEach.call(grid.querySelectorAll('.promptcard'),function(card){
       if(card.querySelector('.adminbar')||!card._row)return;
