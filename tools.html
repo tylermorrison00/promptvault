@@ -5,7 +5,7 @@ function loadFavs(){}
 /* ---------- tools ---------- */
 function gTF(){try{return JSON.parse(localStorage.getItem("pv_tf")||"[]")}catch(e){return[]}}
 function iTF(i){return gTF().indexOf(String(i))>=0}
-function tTF(i){var f=gTF(),x=String(i),j=f.indexOf(x);if(j>=0){f.splice(j,1)}else{f.push(x)}try{localStorage.setItem("pv_tf",JSON.stringify(f))}catch(e){}renderTools()}
+function tTF(i){var v=window.PVviewer||{};if(!(v.member||v.admin)){if(window.PVopenLogin)window.PVopenLogin();return}var f=gTF(),x=String(i),j=f.indexOf(x);if(j>=0){f.splice(j,1)}else{f.push(x)}try{localStorage.setItem("pv_tf",JSON.stringify(f))}catch(e){}renderTools()}
 function toolCardHTML(o){
   var P=!!o.is_paid;
   var tags=(o.tags||[]).filter(function(x){return String(x).trim()});
