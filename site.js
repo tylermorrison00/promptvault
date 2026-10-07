@@ -95,8 +95,6 @@ window.PVmoveTagSimple=function(page,tag,dir){
   }
 };
 window.PVaddReorderButton=function(page,filtersId){
-  // Only for admin
-  if(!document.body.classList.contains('admin'))return;
   var F=document.getElementById(filtersId);
   if(!F)return;
   // Don't add twice
