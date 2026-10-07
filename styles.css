@@ -14,3 +14,6 @@
 .hero .container{position:relative;z-index:1}
 
 .tagchip.trend,.tag.trend{background:var(--accent);color:var(--accentInk);border-color:var(--accent);font-weight:700}
+/* Tag reorder buttons - admin only */
+.tagmove{display:none!important}
+body.admin .tagmove{display:inline-flex!important}

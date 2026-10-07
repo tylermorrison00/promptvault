@@ -21,37 +21,48 @@ window.PVsortTags=function(tags,page){
   });
 };
 window.PVmoveTag=function(page,tag,dir,allTags,rerender){
-  var tags=allTags.slice(),idx=-1;
-  for(var i=0;i<tags.length;i++){if(String(tags[i]).toLowerCase()===String(tag).toLowerCase()){idx=i;break}}
-  if(idx<0)return;
-  var ni=idx+dir;
-  if(ni<0||ni>=tags.length)return;
-  var tmp=tags[idx];tags[idx]=tags[ni];tags[ni]=tmp;
-  var rows=tags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
-  api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
-    return api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
-  }).then(function(){
-    var o={};rows.forEach(function(r){o[r.tag]=r.sort_order});
-    window.PVtagOrder[page]=o;
-    rerender();
-  }).catch(function(e){alert('Could not save order: '+e.message)});
+  try{
+    if(!window.api){alert('API not ready');return}
+    var tags=(allTags||[]).slice(),idx=-1,tl=String(tag).toLowerCase();
+    for(var i=0;i<tags.length;i++){if(String(tags[i]).toLowerCase()===tl){idx=i;break}}
+    if(idx<0){alert('Tag not found');return}
+    var ni=idx+dir;
+    if(ni<0||ni>=tags.length)return;
+    var tmp=tags[idx];tags[idx]=tags[ni];tags[ni]=tmp;
+    var rows=tags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
+    window.api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
+      return window.api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
+    }).then(function(){
+      var o={};rows.forEach(function(r){o[r.tag]=r.sort_order});
+      window.PVtagOrder[page]=o;
+      location.reload();
+    }).catch(function(e){alert('Could not save: '+(e&&e.message?e.message:e))});
+  }catch(err){alert('Error: '+(err&&err.message?err.message:err))}
 };
 window.PVaddTagMoves=function(page,filtersId,attrPrefix,rerenderFn){
-  if(!document.body.classList.contains('admin'))return;
   var F=document.getElementById(filtersId);
   if(!F)return;
   var T=[];
-  F.querySelectorAll('['+attrPrefix+'^="tag:"]').forEach(function(b){
+  var btns=F.querySelectorAll('['+attrPrefix+'^="tag:"]');
+  btns.forEach(function(b){
     T.push(b.getAttribute(attrPrefix).slice(4));
   });
-  F.querySelectorAll('['+attrPrefix+'^="tag:"]').forEach(function(b){
+  btns.forEach(function(b){
     var t=b.getAttribute(attrPrefix).slice(4);
+    // Skip if already has moves
+    if(b.nextSibling&&b.nextSibling.classList&&b.nextSibling.classList.contains('tagmove'))return;
     var s=document.createElement('span');
-    s.style.cssText='display:inline-flex;gap:2px;margin-left:2px';
-    s.innerHTML='<button type="button" class="filter" style="padding:4px 8px" title="Move up">↑</button><button type="button" class="filter" style="padding:4px 8px" title="Move down">↓</button>';
-    var btns=s.querySelectorAll('button');
-    btns[0].onclick=function(e){e.stopPropagation();window.PVmoveTag(page,t,-1,T,rerenderFn)};
-    btns[1].onclick=function(e){e.stopPropagation();window.PVmoveTag(page,t,1,T,rerenderFn)};
+    s.className='tagmove';
+    s.style.cssText='display:none;gap:2px;margin-left:4px;vertical-align:middle';
+    var up=document.createElement('button');
+    up.type='button';up.className='filter';up.style.cssText='padding:2px 7px;font-size:12px;line-height:1.4';
+    up.textContent='\u2191';up.title='Move up';
+    var dn=document.createElement('button');
+    dn.type='button';dn.className='filter';dn.style.cssText='padding:2px 7px;font-size:12px;line-height:1.4';
+    dn.textContent='\u2193';dn.title='Move down';
+    up.onclick=function(e){e.stopPropagation();e.preventDefault();window.PVmoveTag(page,t,-1,T,rerenderFn)};
+    dn.onclick=function(e){e.stopPropagation();e.preventDefault();window.PVmoveTag(page,t,1,T,rerenderFn)};
+    s.appendChild(up);s.appendChild(dn);
     b.parentNode.insertBefore(s,b.nextSibling);
   });
 };
