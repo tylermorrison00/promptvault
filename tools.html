@@ -5,25 +5,49 @@ function loadFavs(){}
 /* ---------- tools ---------- */
 function gTF(){try{return JSON.parse(localStorage.getItem("pv_tf")||"[]")}catch(e){return[]}}
 function iTF(i){return gTF().indexOf(String(i))>=0}
-function tTF(i){var f=gTF(),x=String(i),j=f.indexOf(x);if(j>=0){f.splice(j,1)}else{f.push(x)}try{localStorage.setItem("pv_tf",JSON.stringify(f))}catch(e){}loadTools()}
+function tTF(i){var f=gTF(),x=String(i),j=f.indexOf(x);if(j>=0){f.splice(j,1)}else{f.push(x)}try{localStorage.setItem("pv_tf",JSON.stringify(f))}catch(e){}renderTools()}
 function toolCardHTML(o){
   var P=!!o.is_paid;
   var tags=(o.tags||[]).filter(function(x){return String(x).trim()});
-  var T=tags.map(function(x){return '<span class="tagchip">'+esc(x)+'</span>'}).join('');
-  var TR=T?'<div class="tagrow">'+T+'</div>':'';
-  var C=o.category?'<span class="tag">'+esc(o.category)+'</span>':'';
+  var T=tags.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('');
   var starCls=iTF(o.id)?' on':'';
   var F='<button class="star'+starCls+'" data-tfav="'+o.id+'" type="button">★</button>';
   var accessHtml=P?'<span class="access">PAID</span>':'<span class="access free">FREE</span>';
   var html='<article class="promptcard" data-tid="'+o.id+'">';
-  html+='<div class="cardmeta">'+accessHtml+'</div>';
+  html+='<div class="cardmeta"><span style="display:flex;gap:6px;flex-wrap:wrap">'+T+'</span>'+accessHtml+'</div>';
   html+='<h3>'+esc(o.name)+'</h3>';
-  html+=TR;
   html+='<p class="desc">'+esc(o.description||'')+'</p>';
   html+='<div class="cardfoot">'+F;
   html+='<a class="copy" style="text-decoration:none;text-align:center;flex:1" href="'+esc(o.url||"#")+'" target="_blank" rel="noopener">Open tool &rarr;</a>';
   html+='</div></article>';
   return html;
+}
+function renderTools(){
+  var grid=document.getElementById("toolgrid");
+  if(!grid)return;
+  grid.innerHTML='';
+  var shown=0;
+  toolRows.forEach(function(t){
+    var isP=!!t.is_paid;
+    if(toolF==="fav"&&!iTF(t.id))return;
+    if(toolF==="free"&&isP)return;
+    if(toolF==="paid"&&!isP)return;
+    if(toolF&&toolF.indexOf("tag:")===0){var tg=toolF.slice(4);if((t.tags||[]).map(function(x){return String(x).toLowerCase()}).indexOf(tg)<0)return;}
+    if(toolQ){var q=toolQ.toLowerCase();var hay=((t.name||"")+" "+(t.description||"")+" "+(t.tags||[]).join(" ")).toLowerCase();if(hay.indexOf(q)<0)return;}
+    shown++;
+    var d=document.createElement('div');d.innerHTML=toolCardHTML(t);var el=d.firstChild;el._row=t;grid.appendChild(el);
+  });
+  if(!shown)grid.innerHTML='<div class="loadingbox">No tools found. Try another filter.</div>';
+  if(document.body.classList.contains('admin')){
+    Array.prototype.forEach.call(grid.querySelectorAll('.promptcard'),function(card){
+      if(card.querySelector('.adminbar')||!card._row)return;
+      var bar=document.createElement('div');bar.className='adminbar';
+      bar.innerHTML='<button class="abtn" type="button">Edit</button><button class="abtn danger" type="button">Delete</button>';
+      card.appendChild(bar);
+      bar.children[0].onclick=function(){openToolForm(card._row)};
+      bar.children[1].onclick=function(){delToolRow(card._row)};
+    });
+  }
 }
 
 var toolF="all",toolQ="",toolRows=[];
@@ -45,7 +69,7 @@ function renderToolTagFilters(){
   w.querySelectorAll(".filter").forEach(function(b){
     b.onclick=function(){
       document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});
-      b.classList.add("active");toolF=b.dataset.f;loadTools();
+      b.classList.add("active");toolF=b.dataset.f;renderTools();
     };
   });
 }
@@ -68,19 +92,7 @@ function loadTools(){
   var grid=$('toolgrid');if(!grid)return;
   grid.innerHTML='<div class="loadingbox">Loading tools...</div>';
   api('/rest/v1/tools?select=*&order=sort_order.asc,created_at.desc','GET').then(function(rows){
-    rows=rows||[];toolRows=rows;renderToolTagFilters();grid.innerHTML='';
-    var shown=0;
-    rows.forEach(function(t){
-      var isP=!!t.is_paid;
-      if(toolF==="fav"&&!iTF(t.id))return;
-      if(toolF==="free"&&isP)return;
-      if(toolF==="paid"&&!isP)return;
-      if(toolF&&toolF.indexOf("tag:")===0){var tg=toolF.slice(4);if((t.tags||[]).map(function(x){return String(x).toLowerCase()}).indexOf(tg)<0)return;}
-      if(toolQ){var q=toolQ.toLowerCase();var hay=((t.name||"")+" "+(t.description||"")+" "+(t.category||"")+" "+(t.tags||[]).join(" ")).toLowerCase();if(hay.indexOf(q)<0)return;}
-      shown++;
-      var d=document.createElement('div');d.innerHTML=toolCardHTML(t);var el=d.firstChild;el._row=t;grid.appendChild(el);
-    });
-    if(!shown)grid.innerHTML='<div class="loadingbox">No tools found. Try another filter.</div>';
+    rows=rows||[];toolRows=rows;renderToolTagFilters();renderTools();
     if(document.body.classList.contains('admin')){
       Array.prototype.forEach.call(grid.querySelectorAll('.promptcard'),function(card){
         if(card.querySelector('.adminbar')||!card._row)return;
@@ -132,12 +144,12 @@ function delToolRow(t){
 (function(){var b=$('addToolBtn');if(!b)return;var obs=new MutationObserver(function(){b.style.display=document.body.classList.contains('admin')?'inline-flex':'none'});obs.observe(document.body,{attributes:true,attributeFilter:['class']});b.style.display=document.body.classList.contains('admin')?'inline-flex':'none';b.onclick=function(){openToolForm(null)}})();
 
 // Tool page event handlers
-document.getElementById("toolSearch").addEventListener("input",function(){toolQ=this.value.trim();loadTools()});
+document.getElementById("toolSearch").addEventListener("input",function(){toolQ=this.value.trim();renderTools()});
 document.querySelectorAll("#toolFilters .filter").forEach(function(b){
   if(b.closest("#toolTagFilters"))return;
   b.addEventListener("click",function(){
     document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});
-    b.classList.add("active");toolF=b.dataset.f;loadTools();
+    b.classList.add("active");toolF=b.dataset.f;renderTools();
   });
 });
 document.getElementById("toolgrid").addEventListener("click",function(e){
