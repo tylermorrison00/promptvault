@@ -72,7 +72,7 @@ function renderToolTagFilters(){
       b.classList.add("active");toolF=b.dataset.f;renderTools();
     };
   });
-  if(window.PVaddReorderBtn)window.PVaddReorderBtn('tools','toolTagFilters','data-f',function(){renderToolTagFilters()});
+  if(window.PVaddTagMoves)window.PVaddTagMoves('tools','toolTagFilters','data-f',function(){renderToolTagFilters()})
 }
 
 function renderToolTagPick(){
