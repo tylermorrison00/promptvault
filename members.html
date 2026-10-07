@@ -1,12 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="color-scheme" content="dark" />
-<meta name="robots" content="noindex, nofollow" />
-<title>Members — PromptVault</title>
-<style>
+<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="color-scheme" content="dark" /><meta name="robots" content="noindex, nofollow" /><title>Members — PromptVault</title><style>
 :root{color-scheme:dark;--bg:#07110e;--surface:#0d1915;--surface2:#13231d;--text:#edf8f2;--muted:#9cb5aa;--line:#213a30;--accent:#42d69c;--accent2:#70e9bb;--soft:#113d2e;--accentInk:#aaf2d5;--danger:#e06c5b;--shadow:0 22px 60px rgba(0,0,0,.28)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{max-width:760px;margin:auto;padding:40px 20px 80px}
@@ -35,109 +27,8 @@ input[type=search]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--s
 .hidden{display:none!important}
 @media(max-width:560px){.card{padding:20px}.mrow .dt{display:none}}
 a.tbtn{text-decoration:none;display:inline-flex;align-items:center}
-</style>
-</head>
-<body>
-<div class="wrap">
-<div class="topbar"><a class="back" href="/">← Back to site</a><div class="brand">PromptVault · Members</div></div>
+</style></head><body><div class="wrap"><div class="topbar"><a class="back" href="/">← Back to site</a><div class="brand">PromptVault · Members</div></div><div class="card" id="gate"><h2>Checking access…</h2></div><div id="app" class="hidden"><div class="card"><h2>Prompt requests <span class="count" id="reqcount"></span></h2><p class="sub">New prompt ideas from members. Mark done when handled.</p><div id="reqlist"></div></div><div class="card"><h2>Members</h2><p class="sub">Set each member's plan — Free, Basic (30 days or permanent), or Pro (30 days or permanent). Paste an email in the search to find a member instantly.</p><label for="q">Search by email</label><input type="search" id="q" placeholder="Paste email here…" autocomplete="off"><div class="count" id="count"></div><div id="list"></div></div></div></div>
 
-<div class="card" id="gate"><h2>Checking access…</h2></div>
-
-<div id="app" class="hidden">
-<div class="card">
-<h2>Prompt requests <span class="count" id="reqcount"></span></h2>
-<p class="sub">New prompt ideas from members. Mark done when handled.</p>
-<div id="reqlist"></div>
-</div>
-<div class="card">
-<h2>Members</h2>
-<p class="sub">Set each member's plan — Free, Basic (30 days or permanent), or Pro (30 days or permanent). Paste an email in the search to find a member instantly.</p>
-<label for="q">Search by email</label>
-<input type="search" id="q" placeholder="Paste email here…" autocomplete="off">
-<div class="count" id="count"></div>
-<div id="list"></div>
-</div>
-</div>
-</div>
-
-<script>(function(){
-var SB_URL="https://vfyuebkdkxhdrlduqxng.supabase.co";
-var SB_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeXVlYmtka3hoZHJsZHVxeG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExOTI1NDQsImV4cCI6MjEwNjc2ODU0NH0.RY-VU33zwySGKmPH34pHs72HaxRt9yi4lAhHO9xn7_4";
-var ADMIN_EMAIL="talhamohsin216@gmail.com";
-var token=sessionStorage.getItem('pv_admin_token')||'';
-var allRows=[];
-function $(id){return document.getElementById(id)}
-function api(path,method,body){
-  var h={'apikey':SB_ANON,'Authorization':'Bearer '+(token||SB_ANON),'Content-Type':'application/json'};
-  if(method!=='GET')h['Prefer']='return=representation';
-  return fetch(SB_URL+path,{method:method||'GET',headers:h,body:body}).then(function(r){
-    return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}
-      if(!r.ok)throw new Error((j&&(j.message||j.msg))||('Error '+r.status));return j})});
-}
-function denied(msg){$('gate').innerHTML='<h2>Access denied</h2><p class="sub" style="margin:0">'+msg+'</p>'}
-if(!token){denied('Please log in on the main site first.');}
-else{
-  api('/auth/v1/user','GET').then(function(u){
-    if(String(u.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()){denied('This page is for the admin only.');return}
-    $('gate').classList.add('hidden');$('app').classList.remove('hidden');load();
-  }).catch(function(){denied('Please log in on the main site first.')});
-}
-function load(){
-  api('/rest/v1/profiles?select=id,email,plan,plan_expires_at,created_at&order=created_at.desc','GET').then(function(rows){
-    allRows=rows||[];render();
-  }).catch(function(e){$('list').innerHTML='<div class="empty">Could not load: '+e.message+'</div>'});
-  api('/rest/v1/prompt_requests?select=*&status=eq.pending&order=created_at.desc','GET').then(renderReq).catch(function(){});
-}
-function renderReq(rows){
-  rows=rows||[];
-  $('reqcount').textContent=rows.length?('('+rows.length+' pending)'):'';
-  var L=$('reqlist');L.innerHTML='';
-  if(!rows.length){L.innerHTML='<div class="empty">No pending requests.</div>';return}
-  rows.forEach(function(r){
-    var d=document.createElement('div');d.className='mrow';
-    var em=document.createElement('div');em.className='em';
-    em.textContent=(r.email||'member')+' \u2014 '+r.req_text;d.appendChild(em);
-    var dt=document.createElement('div');dt.className='dt';try{dt.textContent=new Date(r.created_at).toLocaleString()}catch(e){}d.appendChild(dt);
-    var a=document.createElement('a');a.className='tbtn';a.textContent='Link';a.href=r.link;a.target='_blank';a.rel='noopener';d.appendChild(a);
-    var f=document.createElement('a');f.className='tbtn';f.textContent='File';f.href=r.file_url;f.target='_blank';f.rel='noopener';d.appendChild(f);
-    var b=document.createElement('button');b.className='tbtn';b.type='button';b.textContent='Mark done';
-    b.onclick=function(){b.disabled=true;
-      api('/rest/v1/prompt_requests?id=eq.'+r.id,'PATCH',JSON.stringify({status:'done'}))
-      .then(load).catch(function(e){alert(e.message);b.disabled=false})};
-    d.appendChild(b);L.appendChild(d);
-  });
-}
-function render(){
-  var q=$('q').value.trim().toLowerCase();
-  var rows=allRows.filter(function(m){return !q||String(m.email||'').toLowerCase().indexOf(q)>-1});
-  $('count').textContent=rows.length+' of '+allRows.length+' members';
-  var L=$('list');L.innerHTML='';
-  if(!rows.length){L.innerHTML='<div class="empty">'+(q?'No member matches that email.':'No members yet.')+'</div>';return}
-  rows.forEach(function(m){
-    var d=document.createElement('div');d.className='mrow';
-    var em=document.createElement('div');em.className='em';em.textContent=m.email||String(m.id).slice(0,8);d.appendChild(em);
-    var dt=document.createElement('div');dt.className='dt';try{dt.textContent=new Date(m.created_at).toLocaleDateString()}catch(e){}d.appendChild(dt);
-    var pl=(m.plan||'free');
-    var tag=document.createElement('span');tag.className='protag'+(pl==='pro'?' on':'');tag.textContent=pl.toUpperCase();d.appendChild(tag);
-    var ex=document.createElement('div');ex.className='dt';
-    if(pl==='free')ex.textContent='\u2014';
-    else if(m.plan_expires_at){try{ex.textContent='till '+new Date(m.plan_expires_at).toLocaleDateString()}catch(e){ex.textContent=''}}
-    else ex.textContent='Permanent';
-    d.appendChild(ex);
-    var sel=document.createElement('select');sel.className='tbtn';sel.setAttribute('aria-label','Set plan');
-    var opts=[['free','Free'],['basic:30','Basic \u00b7 30 days'],['basic:perm','Basic \u00b7 Permanent'],['pro:30','Pro \u00b7 30 days'],['pro:perm','Pro \u00b7 Permanent']];
-    var cur=pl==='free'?'free':pl+':'+(m.plan_expires_at?'30':'perm');
-    opts.forEach(function(o){var op=document.createElement('option');op.value=o[0];op.textContent=o[1];if(o[0]===cur)op.selected=true;sel.appendChild(op)});
-    sel.onchange=function(){sel.disabled=true;
-      var parts=sel.value.split(':'),p0=parts[0],exp=null;
-      if(p0!=='free'&&parts[1]==='30')exp=new Date(Date.now()+30*24*3600*1000).toISOString();
-      api('/rest/v1/profiles?id=eq.'+m.id,'PATCH',JSON.stringify({plan:p0,plan_expires_at:exp}))
-      .then(load).catch(function(e){alert(e.message);sel.disabled=false})};
-    d.appendChild(sel);L.appendChild(d);
-  });
-}
-$('q').addEventListener('input',render);
-})();
+<script>!function(){var e="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeXVlYmtka3hoZHJsZHVxeG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExOTI1NDQsImV4cCI6MjEwNjc2ODU0NH0.RY-VU33zwySGKmPH34pHs72HaxRt9yi4lAhHO9xn7_4",t=localStorage.getItem("pv_admin_token")||"",n=[];function a(e){return document.getElementById(e)}function r(n,a,r){var i={apikey:e,Authorization:"Bearer "+(t||e),"Content-Type":"application/json"};return"GET"!==a&&(i.Prefer="return=representation"),fetch("https://vfyuebkdkxhdrlduqxng.supabase.co"+n,{method:a||"GET",headers:i,body:r}).then(function(e){return e.text().then(function(t){var n=null;try{n=t?JSON.parse(t):null}catch(e){}if(!e.ok)throw new Error(n&&(n.message||n.msg)||"Error "+e.status);return n})})}function i(e){a("gate").innerHTML='<h2>Access denied</h2><p class="sub" style="margin:0">'+e+"</p>"}function o(){r("/rest/v1/profiles?select=id,email,plan,plan_expires_at,created_at&order=created_at.desc","GET").then(function(e){n=e||[],l()}).catch(function(e){a("list").innerHTML='<div class="empty">Could not load: '+e.message+"</div>"}),r("/rest/v1/prompt_requests?select=*&status=eq.pending&order=created_at.desc","GET").then(s).catch(function(){})}function s(e){e=e||[],a("reqcount").textContent=e.length?"("+e.length+" pending)":"";var t=a("reqlist");t.innerHTML="",e.length?e.forEach(function(e){var n=document.createElement("div");n.className="mrow";var a=document.createElement("div");a.className="em",a.textContent=(e.email||"member")+" — "+e.req_text,n.appendChild(a);var i=document.createElement("div");i.className="dt";try{i.textContent=new Date(e.created_at).toLocaleString()}catch(e){}n.appendChild(i);var s=document.createElement("a");s.className="tbtn",s.textContent="Link",s.href=e.link,s.target="_blank",s.rel="noopener",n.appendChild(s);var l=document.createElement("a");l.className="tbtn",l.textContent="File",l.href=e.file_url,l.target="_blank",l.rel="noopener",n.appendChild(l);var c=document.createElement("button");c.className="tbtn",c.type="button",c.textContent="Mark done",c.onclick=function(){c.disabled=!0,r("/rest/v1/prompt_requests?id=eq."+e.id,"PATCH",JSON.stringify({status:"done"})).then(o).catch(function(e){alert(e.message),c.disabled=!1})},n.appendChild(c),t.appendChild(n)}):t.innerHTML='<div class="empty">No pending requests.</div>'}function l(){var e=a("q").value.trim().toLowerCase(),t=n.filter(function(t){return!e||String(t.email||"").toLowerCase().indexOf(e)>-1});a("count").textContent=t.length+" of "+n.length+" members";var i=a("list");i.innerHTML="",t.length?t.forEach(function(e){var t=document.createElement("div");t.className="mrow";var n=document.createElement("div");n.className="em",n.textContent=e.email||String(e.id).slice(0,8),t.appendChild(n);var a=document.createElement("div");a.className="dt";try{a.textContent=new Date(e.created_at).toLocaleDateString()}catch(e){}t.appendChild(a);var s=e.plan||"free",l=document.createElement("span");l.className="protag"+("pro"===s?" on":""),l.textContent=s.toUpperCase(),t.appendChild(l);var c=document.createElement("div");if(c.className="dt","free"===s)c.textContent="—";else if(e.plan_expires_at)try{c.textContent="till "+new Date(e.plan_expires_at).toLocaleDateString()}catch(e){c.textContent=""}else c.textContent="Permanent";t.appendChild(c);var d=document.createElement("select");d.className="tbtn",d.setAttribute("aria-label","Set plan");var m="free"===s?"free":s+":"+(e.plan_expires_at?"30":"perm");[["free","Free"],["basic:30","Basic · 30 days"],["basic:perm","Basic · Permanent"],["pro:30","Pro · 30 days"],["pro:perm","Pro · Permanent"]].forEach(function(e){var t=document.createElement("option");t.value=e[0],t.textContent=e[1],e[0]===m&&(t.selected=!0),d.appendChild(t)}),d.onchange=function(){d.disabled=!0;var t=d.value.split(":"),n=t[0],a=null;"free"!==n&&"30"===t[1]&&(a=new Date(Date.now()+2592e6).toISOString()),r("/rest/v1/profiles?id=eq."+e.id,"PATCH",JSON.stringify({plan:n,plan_expires_at:a})).then(o).catch(function(e){alert(e.message),d.disabled=!1})},t.appendChild(d),i.appendChild(t)}):i.innerHTML='<div class="empty">'+(e?"No member matches that email.":"No members yet.")+"</div>"}t?r("/auth/v1/user","GET").then(function(e){String(e.email||"").toLowerCase()==="talhamohsin216@gmail.com".toLowerCase()?(a("gate").classList.add("hidden"),a("app").classList.remove("hidden"),o()):i("This page is for the admin only.")}).catch(function(){i("Please log in on the main site first.")}):i("Please log in on the main site first."),a("q").addEventListener("input",l)}();
 </script>
-</body>
-</html>
+</body></html>
