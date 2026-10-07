@@ -14,8 +14,8 @@ create table if not exists niches (
   early_until timestamptz,
   tags text[] not null default '{}',
   sort_order int not null default 0,
-  created_at timestamptz default now()
-);
+  created_at timestamptz default now(),
+  link_url text);
 alter table niches enable row level security;
 drop policy if exists "public select niches" on niches;
 create policy "public select niches" on niches for select using (true);
@@ -53,3 +53,6 @@ create policy "admin update tools" on tools for update
 drop policy if exists "admin delete tools" on tools;
 create policy "admin delete tools" on tools for delete
   using ((auth.jwt() ->> 'email') = 'talhamohsin216@gmail.com');
+
+
+alter table niches add column if not exists link_url text;
