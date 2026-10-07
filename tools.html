@@ -62,37 +62,14 @@ function renderToolTagFilters(){
       if(t&&!seen[k]){seen[k]=1;tags.push(t)}
     });
   });
-  var ord=[];try{ord=JSON.parse(localStorage.getItem("pv_tagorder_tools")||"[]")}catch(x){}
-  var isAdmin=window.PVviewer&&window.PVviewer.admin;
-  tags.sort(function(a,b){var ia=ord.indexOf(a.toLowerCase()),ib=ord.indexOf(b.toLowerCase());if(ia>-1&&ib>-1)return ia-ib;if(ia>-1)return -1;if(ib>-1)return 1;return a.toLowerCase().localeCompare(b.toLowerCase())});
+  tags.sort(function(a,b){return a.toLowerCase().localeCompare(b.toLowerCase())});
   w.innerHTML="";
   tags.forEach(function(t){
-    var wrap=document.createElement("span");wrap.style.cssText="display:inline-flex;align-items:center;gap:2px";wrap.dataset.tagwrap=t.toLowerCase();
     var btn=document.createElement("button");btn.className="filter";btn.type="button";btn.dataset.f="tag:"+t.toLowerCase();btn.textContent=t;
     btn.onclick=function(){document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});btn.classList.add("active");toolF=btn.dataset.f;renderTools();};
-    wrap.appendChild(btn);
-    if(isAdmin){
-      var lb=document.createElement("button");lb.type="button";lb.textContent="\u2190";lb.title="Move left";lb.style.cssText="font-size:.7rem;padding:2px 5px;cursor:pointer;background:var(--soft);border:1px solid var(--line);border-radius:6px;color:var(--muted)";
-      lb.onclick=function(ev){ev.stopPropagation();moveToolTag(t,-1)};
-      var rb=document.createElement("button");rb.type="button";rb.textContent="\u2192";rb.title="Move right";rb.style.cssText=lb.style.cssText;
-      rb.onclick=function(ev){ev.stopPropagation();moveToolTag(t,1)};
-      wrap.appendChild(lb);wrap.appendChild(rb);
-    }
-    w.appendChild(wrap);
+    w.appendChild(btn);
   });
 }
-function moveToolTag(tag,dir){
-  var all=[];try{all=JSON.parse(localStorage.getItem("pv_tagorder_tools")||"[]")}catch(x){}
-  var w=document.getElementById("toolTagFilters");
-  var current=Array.prototype.map.call(w.querySelectorAll("[data-tagwrap]"),function(el){return el.dataset.tagwrap});
-  current.forEach(function(k){if(all.indexOf(k)<0)all.push(k)});
-  var i=all.indexOf(tag.toLowerCase()),j=i+dir;
-  if(i<0||j<0||j>=all.length)return;
-  var tmp=all[i];all[i]=all[j];all[j]=tmp;
-  try{localStorage.setItem("pv_tagorder_tools",JSON.stringify(all))}catch(x){}
-  renderToolTagFilters();
-}
-
 function renderToolTagPick(){
   var w=document.getElementById("t_tagpick");
   if(!w)return;
@@ -188,19 +165,4 @@ document.getElementById("t_addtag").onclick=function(){
 };
 
 boot();
-</script> <div class="mback" id="trendBackT"><div class="modal" role="dialog" aria-modal="true" aria-label="Suggest a trend"><h3>Suggest a trend</h3><p class="sub">Spotted something trending? Tell us in a line or two.</p><label for="trendTextT">What's trending?</label><textarea id="trendTextT" rows="3" maxlength="200" placeholder="e.g. AI fitness coaches on TikTok are blowing up"></textarea><div class="merr" id="trendErrT" style="display:none"></div><div class="mrow"><button class="btn primary" id="trendSubmitT" type="button">Submit</button><button class="btn secondary" id="trendCloseT" type="button">Cancel</button></div></div></div><script>
-(function(){
-var back=document.getElementById("trendBackT"),txt=document.getElementById("trendTextT"),err=document.getElementById("trendErrT");
-var btn=document.getElementById("suggestTrendBtnT");
-if(btn)btn.onclick=function(){txt.value="";err.style.display="none";back.classList.add("open")};
-document.getElementById("trendCloseT").onclick=function(){back.classList.remove("open")};
-back.onclick=function(e){if(e.target===back)back.classList.remove("open")};
-document.getElementById("trendSubmitT").onclick=function(){
-var v=txt.value.trim();
-if(!v){err.textContent="Please write what\'s trending.";err.style.display="block";return}
-err.style.display="none";
-var key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmeXVlYmtka3hoZHJsZHVxeG5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExOTI1NDQsImV4cCI6MjEwNjc2ODU0NH0.RY-VU33zwySGKmPH34pHs72HaxRt9yi4lAhHO9xn7_4";
-fetch("https://vfyuebkdkxhdrlduqxng.supabase.co/rest/v1/trend_suggestions",{method:"POST",headers:{apikey:key,Authorization:"Bearer "+key,"Content-Type":"application/json"},body:JSON.stringify({section:"tools",description:v})}).then(function(r){if(!r.ok)throw 0;back.classList.remove("open");txt.value="";var t=document.getElementById("toast");if(t){t.textContent="Thanks! Suggestion sent.";t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2000)}}).catch(function(){err.textContent="Could not send. Try again.";err.style.display="block"});
-};
-})();
-</script></body></html>
+</script> </div><script>window.PVtrendModal("suggestTrendBtnT","tools")</script></body></html>
