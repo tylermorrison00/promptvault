@@ -137,7 +137,7 @@ $('saveTool').onclick=function(){
   var accEl=document.querySelector("#t_accesspick .tchip.on");
   var isPaid=accEl&&accEl.dataset.acc==="paid";
   var row={name:name,category:"",is_paid:isPaid,tags:TT.slice(),description:$('t_desc').value.trim(),url:$('t_url').value.trim(),
-    sort_order:parseInt($('t_order').value||'0',10),trending_until:$('t_trending').checked?new Date(Date.now()+2592e6).toISOString():null};
+    sort_order:parseInt($('t_order').value||'0',10),trending_until:$('t_trending').checked?(editingTool&&editingTool.trending_until&&new Date(editingTool.trending_until).getTime()>Date.now()?editingTool.trending_until:new Date(Date.now()+2592e6).toISOString()):null};
   var p=editingTool?api('/rest/v1/tools?id=eq.'+editingTool,'PATCH',JSON.stringify(row)):api('/rest/v1/tools','POST',JSON.stringify(row));
   p.then(function(){$('toolFormBack').classList.remove('open');loadTools()})
    .catch(function(e){err.textContent='Could not save: '+e.message;err.style.display='block'})
