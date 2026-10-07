@@ -83,13 +83,18 @@ function renderToolTagFilters(){
 function renderToolTagPick(){
   var w=document.getElementById("t_tagpick");
   if(!w)return;
-  w.innerHTML=TT.map(function(t){
-    return '<button type="button" class="tchip on" data-tag="'+esc(t)+'">'+esc(t)+' &#x2715;</button>';
+  var all={};
+  (toolRows||[]).forEach(function(r){(r.tags||[]).forEach(function(t){t=String(t).trim();if(t)all[t.toLowerCase()]=t})});
+  var tags=Object.keys(all).map(function(k){return all[k]}).sort();
+  w.innerHTML=tags.map(function(t){
+    var on=TT.indexOf(t)>=0;
+    return '<button type="button" class="tchip'+(on?' on':'')+'" data-tag="'+esc(t)+'">'+esc(t)+(on?' &#x2715;':'')+'</button>';
   }).join('');
   w.querySelectorAll(".tchip").forEach(function(b){
     b.onclick=function(){
-      var i=TT.indexOf(b.dataset.tag);
-      if(i>=0){TT.splice(i,1);renderToolTagPick()}
+      var tag=b.dataset.tag,i=TT.indexOf(tag);
+      if(i>=0){TT.splice(i,1)}else{TT.push(tag)}
+      renderToolTagPick();
     };
   });
 }
