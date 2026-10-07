@@ -29,7 +29,7 @@ function renderTools(){
   var shown=0;
   toolRows.forEach(function(t){
     var isP=!!t.is_paid;
-    if(toolF==="fav"&&!iTF(t.id))return;
+    if(toolF==="fav"&&!iTF(t.id))return;if(toolF==="trending"&&!(t.trending_until&&new Date(t.trending_until)>new Date()))return;
     if(toolF==="free"&&isP)return;
     if(toolF==="paid"&&!isP)return;
     if(toolF&&toolF.indexOf("tag:")===0){var tg=toolF.slice(4);if((t.tags||[]).map(function(x){return String(x).toLowerCase()}).indexOf(tg)<0)return;}
