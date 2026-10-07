@@ -2,114 +2,12 @@ var SB_URL="https://vfyuebkdkxhdrlduqxng.supabase.co",SB_ANON="eyJhbGciOiJIUzI1N
 window.PVtrendModal=function(b,s){var d=document,id="pvTB",e=d.getElementById(id);if(!e){e=d.createElement("div");e.className="mback";e.id=id;e.innerHTML='<div class=modal><h3>Suggest a trend</h3><textarea id=pvTT rows=3 maxlength=200 placeholder="What\'s trending?"></textarea><div class=mrow><button class="btn primary" id=pvTS type=button>Send</button><button class="btn secondary" id=pvTC type=button>Cancel</button></div></div>';d.body.appendChild(e);d.getElementById("pvTC").onclick=function(){e.classList.remove("open")};e.onclick=function(x){if(x.target==e)e.classList.remove("open")};d.getElementById("pvTS").onclick=function(){var t=d.getElementById("pvTT"),v=t.value.trim();if(!v){alert("Please write what\'s trending.");return}var k=SB_ANON;fetch(SB_URL+"/rest/v1/trend_suggestions",{method:"POST",headers:{apikey:k,Authorization:"Bearer "+k,"Content-Type":"application/json"},body:JSON.stringify({section:s,description:v})}).then(function(x){if(!x.ok)throw 0;e.classList.remove("open");t.value="";alert("Thanks! Sent.")}).catch(function(){alert("Could not send.")})}}var n=d.getElementById(b);if(n)n.onclick=function(){d.getElementById("pvTT").value="";e.classList.add("open")}};
 
 // Tag custom order (admin) - v2
-window.PVtagOrder={};
-window.PVloadTagOrder=function(page){
-  return api('/rest/v1/tag_orders?page=eq.'+page+'&select=tag,sort_order&order=sort_order.asc','GET').then(function(rows){
-    var o={};(rows||[]).forEach(function(r){o[String(r.tag).toLowerCase()]=r.sort_order});
-    window.PVtagOrder[page]=o;
-  }).catch(function(){window.PVtagOrder[page]={}});
-};
-window.PVsortTags=function(tags,page){
-  var order=window.PVtagOrder[page]||{};
-  return tags.slice().sort(function(a,b){
-    var oa=order[String(a).toLowerCase()],ob=order[String(b).toLowerCase()];
-    if(oa!==undefined&&ob!==undefined)return oa-ob;
-    if(oa!==undefined)return -1;
-    if(ob!==undefined)return 1;
-    var al=String(a).toLowerCase(),bl=String(b).toLowerCase();
-    return al<bl?-1:al>bl?1:0;
-  });
-};
+
+
+
 
 // Tag reorder mode (admin) - simple and reliable
-window.PVtagReorderMode={};
-window.PVtoggleTagReorder=function(page,filtersId,attrPrefix){
-  var F=document.getElementById(filtersId);
-  if(!F)return;
-  var isActive=window.PVtagReorderMode[page];
-  if(isActive){
-    // Exit reorder mode - reload to clean state
-    location.reload();
-    return;
-  }
-  window.PVtagReorderMode[page]=true;
-  // Add reorder buttons to each tag
-  var btns=F.querySelectorAll('['+attrPrefix+'^="tag:"]');
-  var tags=[];
-  btns.forEach(function(b){tags.push(b.getAttribute(attrPrefix).slice(4))});
-  btns.forEach(function(b){
-    var tag=b.getAttribute(attrPrefix).slice(4);
-    var wrap=document.createElement('span');
-    wrap.className='pv-reorder-btns';
-    wrap.style.cssText='display:inline-flex;gap:2px;margin-left:4px;vertical-align:middle';
-    var up=document.createElement('button');
-    up.type='button';up.className='filter';up.style.cssText='padding:2px 8px;font-size:13px';
-    up.textContent='↑';up.title='Move left';
-    var dn=document.createElement('button');
-    dn.type='button';dn.className='filter';dn.style.cssText='padding:2px 8px;font-size:13px';
-    dn.textContent='↓';dn.title='Move right';
-    up.onclick=function(e){
-      e.stopPropagation();e.preventDefault();
-      window.PVmoveTagSimple(page,tag,-1);
-    };
-    dn.onclick=function(e){
-      e.stopPropagation();e.preventDefault();
-      window.PVmoveTagSimple(page,tag,1);
-    };
-    wrap.appendChild(up);wrap.appendChild(dn);
-    b.parentNode.insertBefore(wrap,b.nextSibling);
-  });
-  // Change the reorder button text to "Done"
-  var rb=document.getElementById('pv-reorder-btn-'+page);
-  if(rb)rb.textContent='Done';
-};
-window.PVmoveTagSimple=function(page,tag,dir){
-  try{
-    var F=null,attrPrefix=null;
-    if(page==='prompts'){F=document.getElementById('filters');attrPrefix='data-filter'}
-    else if(page==='niches'){F=document.getElementById('nicheFilters');attrPrefix='data-f'}
-    else if(page==='tools'){F=document.getElementById('toolTagFilters');attrPrefix='data-f'}
-    if(!F)return;
-    var allTags=[];
-    F.querySelectorAll('['+attrPrefix+'^="tag:"]').forEach(function(b){
-      allTags.push(b.getAttribute(attrPrefix).slice(4));
-    });
-    var idx=-1,tl=String(tag).toLowerCase();
-    for(var i=0;i<allTags.length;i++){
-      if(String(allTags[i]).toLowerCase()===tl){idx=i;break}
-    }
-    if(idx<0)return;
-    var ni=idx+dir;
-    if(ni<0||ni>=allTags.length)return;
-    var tmp=allTags[idx];allTags[idx]=allTags[ni];allTags[ni]=tmp;
-    var rows=allTags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
-    window.api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
-      return window.api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
-    }).then(function(){
-      location.reload();
-    }).catch(function(e){
-      alert('Could not save: '+(e&&e.message?e.message:e));
-    });
-  }catch(err){
-    alert('Error: '+(err&&err.message?err.message:err));
-  }
-};
-window.PVaddReorderButton=function(page,filtersId){
-  var F=document.getElementById(filtersId);
-  if(!F)return;
-  // Don't add twice
-  if(document.getElementById('pv-reorder-btn-'+page))return;
-  var btn=document.createElement('button');
-  btn.id='pv-reorder-btn-'+page;
-  btn.type='button';
-  btn.className='filter';
-  btn.style.cssText='margin-left:8px;font-size:12px;opacity:.8';
-  btn.textContent='Reorder';
-  btn.title='Reorder tags';
-  btn.onclick=function(e){
-    e.stopPropagation();
-    var attrPrefix=(page==='prompts')?'data-filter':'data-f';
-    window.PVtoggleTagReorder(page,filtersId,attrPrefix);
-  };
-  F.appendChild(btn);
-};
+
+
+
+

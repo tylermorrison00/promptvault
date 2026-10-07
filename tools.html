@@ -62,7 +62,7 @@ function renderToolTagFilters(){
       if(t&&!seen[k]){seen[k]=1;tags.push(t)}
     });
   });
-  if(window.PVsortTags)tags=window.PVsortTags(tags,'tools');else tags.sort(function(a,b){return a.toLowerCase().localeCompare(b.toLowerCase())});
+  tags.sort(function(a,b){return a.toLowerCase().localeCompare(b.toLowerCase())});
   w.innerHTML=tags.map(function(t){
     return '<button class="filter" data-f="tag:'+esc(t.toLowerCase())+'" type="button">'+esc(t)+'</button>';
   }).join('');
@@ -71,7 +71,7 @@ function renderToolTagFilters(){
       document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});
       b.classList.add("active");toolF=b.dataset.f;renderTools();
     };
-  });if(window.PVaddReorderButton)window.PVaddReorderButton('tools','toolTagFilters');
+  });
 }
 
 function renderToolTagPick(){
@@ -169,4 +169,4 @@ document.getElementById("t_addtag").onclick=function(){
 };
 
 boot();
-</script> <script>if(window.PVloadTagOrder)window.PVloadTagOrder('tools').then(function(){if(typeof renderToolTagFilters=='function')renderToolTagFilters()})</script></body></html>
+</script> </body></html>
