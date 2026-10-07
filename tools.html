@@ -71,7 +71,7 @@ function renderToolTagFilters(){
       document.querySelectorAll("#toolFilters .filter").forEach(function(x){x.classList.remove("active")});
       b.classList.add("active");toolF=b.dataset.f;renderTools();
     };
-  });if(window.PVaddTagMoves)window.PVaddTagMoves("tools","toolTagFilters","data-f",function(){renderToolTagFilters()});
+  });if(window.PVenableTagDrag)window.PVenableTagDrag('tools','toolTagFilters','data-f');
 }
 
 function renderToolTagPick(){

@@ -14,6 +14,7 @@
 .hero .container{position:relative;z-index:1}
 
 .tagchip.trend,.tag.trend{background:var(--accent);color:var(--accentInk);border-color:var(--accent);font-weight:700}
-/* Tag reorder buttons - admin only */
-.tagmove{display:none!important}
-body.admin .tagmove{display:inline-flex!important}
+/* Tag drag reorder (admin long-press) */
+.tag-dragging{opacity:.7;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:grabbing!important;touch-action:none}
+body.tag-drag-active{user-select:none;-webkit-user-select:none}
+body.tag-drag-active .filter{cursor:grabbing}

@@ -20,49 +20,110 @@ window.PVsortTags=function(tags,page){
     return al<bl?-1:al>bl?1:0;
   });
 };
-window.PVmoveTag=function(page,tag,dir,allTags,rerender){
-  try{
-    if(!window.api){alert('API not ready');return}
-    var tags=(allTags||[]).slice(),idx=-1,tl=String(tag).toLowerCase();
-    for(var i=0;i<tags.length;i++){if(String(tags[i]).toLowerCase()===tl){idx=i;break}}
-    if(idx<0){alert('Tag not found');return}
-    var ni=idx+dir;
-    if(ni<0||ni>=tags.length)return;
-    var tmp=tags[idx];tags[idx]=tags[ni];tags[ni]=tmp;
-    var rows=tags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
-    window.api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
-      return window.api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
-    }).then(function(){
-      var o={};rows.forEach(function(r){o[r.tag]=r.sort_order});
-      window.PVtagOrder[page]=o;
-      location.reload();
-    }).catch(function(e){alert('Could not save: '+(e&&e.message?e.message:e))});
-  }catch(err){alert('Error: '+(err&&err.message?err.message:err))}
-};
-window.PVaddTagMoves=function(page,filtersId,attrPrefix,rerenderFn){
+
+// Tag drag reorder (admin) - long-press 3s then drag
+window.PVenableTagDrag=function(page,filtersId,attrPrefix){
   var F=document.getElementById(filtersId);
   if(!F)return;
-  var T=[];
   var btns=F.querySelectorAll('['+attrPrefix+'^="tag:"]');
-  btns.forEach(function(b){
-    T.push(b.getAttribute(attrPrefix).slice(4));
-  });
-  btns.forEach(function(b){
-    var t=b.getAttribute(attrPrefix).slice(4);
-    // Skip if already has moves
-    if(b.nextSibling&&b.nextSibling.classList&&b.nextSibling.classList.contains('tagmove'))return;
-    var s=document.createElement('span');
-    s.className='tagmove';
-    s.style.cssText='display:none;gap:2px;margin-left:4px;vertical-align:middle';
-    var up=document.createElement('button');
-    up.type='button';up.className='filter';up.style.cssText='padding:2px 7px;font-size:12px;line-height:1.4';
-    up.textContent='\u2191';up.title='Move up';
-    var dn=document.createElement('button');
-    dn.type='button';dn.className='filter';dn.style.cssText='padding:2px 7px;font-size:12px;line-height:1.4';
-    dn.textContent='\u2193';dn.title='Move down';
-    up.onclick=function(e){e.stopPropagation();e.preventDefault();window.PVmoveTag(page,t,-1,T,rerenderFn)};
-    dn.onclick=function(e){e.stopPropagation();e.preventDefault();window.PVmoveTag(page,t,1,T,rerenderFn)};
-    s.appendChild(up);s.appendChild(dn);
-    b.parentNode.insertBefore(s,b.nextSibling);
+  if(!btns.length)return;
+  var tags=[];
+  btns.forEach(function(b){tags.push(b.getAttribute(attrPrefix).slice(4))});
+  btns.forEach(function(btn){
+    var pressTimer=null,dragging=false,startX=0,startY=0;
+    function isAdmin(){return document.body.classList.contains('admin')}
+    function startPress(x,y){
+      if(!isAdmin())return;
+      startX=x;startY=y;
+      pressTimer=setTimeout(function(){
+        dragging=true;
+        btn.classList.add('tag-dragging');
+        document.body.classList.add('tag-drag-active');
+        if(navigator.vibrate)try{navigator.vibrate(50)}catch(e){}
+      },3000);
+    }
+    function cancelPress(){
+      if(pressTimer){clearTimeout(pressTimer);pressTimer=null}
+    }
+    function endDrag(x,y){
+      cancelPress();
+      if(!dragging)return;
+      dragging=false;
+      btn.classList.remove('tag-dragging');
+      document.body.classList.remove('tag-drag-active');
+      // Find drop target
+      var el=document.elementFromPoint(x,y);
+      var target=null;
+      if(el){
+        target=el.closest('['+attrPrefix+'^="tag:"]');
+      }
+      if(target&&target!==btn){
+        var allTags=[];
+        F.querySelectorAll('['+attrPrefix+'^="tag:"]').forEach(function(b){
+          allTags.push(b.getAttribute(attrPrefix).slice(4));
+        });
+        var fromIdx=-1,toIdx=-1,tl=btn.getAttribute(attrPrefix).slice(4).toLowerCase();
+        for(var i=0;i<allTags.length;i++){
+          if(allTags[i].toLowerCase()===tl)fromIdx=i;
+          if(allTags[i].toLowerCase()===target.getAttribute(attrPrefix).slice(4).toLowerCase())toIdx=i;
+        }
+        if(fromIdx>=0&&toIdx>=0&&fromIdx!==toIdx){
+          var moved=allTags.splice(fromIdx,1)[0];
+          allTags.splice(toIdx,0,moved);
+          var rows=allTags.map(function(t,i){return{page:page,tag:String(t).toLowerCase(),sort_order:i}});
+          window.api('/rest/v1/tag_orders?page=eq.'+page,'DELETE').then(function(){
+            return window.api('/rest/v1/tag_orders','POST',JSON.stringify(rows));
+          }).then(function(){
+            location.reload();
+          }).catch(function(e){alert('Could not save: '+(e&&e.message?e.message:e))});
+        }
+      }
+    }
+    // Touch
+    btn.addEventListener('touchstart',function(e){
+      if(e.touches.length!==1)return;
+      startPress(e.touches[0].clientX,e.touches[0].clientY);
+    },{passive:true});
+    btn.addEventListener('touchmove',function(e){
+      if(!dragging)return;
+      e.preventDefault();
+      var t=e.touches[0];
+      // Visual feedback - move the button slightly
+      btn.style.transform='translate('+(t.clientX-startX)+'px,'+(t.clientY-startY)+'px) scale(1.1)';
+      btn.style.zIndex='9999';
+      btn.style.position='relative';
+    },{passive:false});
+    btn.addEventListener('touchend',function(e){
+      if(dragging){
+        var t=e.changedTouches[0];
+        btn.style.transform='';btn.style.zIndex='';btn.style.position='';
+        endDrag(t.clientX,t.clientY);
+      }else{
+        cancelPress();
+      }
+    });
+    btn.addEventListener('touchcancel',function(){cancelPress();dragging=false;btn.classList.remove('tag-dragging');document.body.classList.remove('tag-drag-active');btn.style.transform='';btn.style.zIndex='';btn.style.position=''});
+    // Mouse (desktop)
+    btn.addEventListener('mousedown',function(e){
+      if(e.button!==0)return;
+      startPress(e.clientX,e.clientY);
+    });
+    btn.addEventListener('mousemove',function(e){
+      if(!dragging)return;
+      btn.style.transform='translate('+(e.clientX-startX)+'px,'+(e.clientY-startY)+'px) scale(1.1)';
+      btn.style.zIndex='9999';
+      btn.style.position='relative';
+    });
+    btn.addEventListener('mouseup',function(e){
+      if(dragging){
+        btn.style.transform='';btn.style.zIndex='';btn.style.position='';
+        endDrag(e.clientX,e.clientY);
+      }else{
+        cancelPress();
+      }
+    });
+    btn.addEventListener('mouseleave',function(){
+      if(!dragging)cancelPress();
+    });
   });
 };
