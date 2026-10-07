@@ -9,7 +9,7 @@ function tTF(i){var v=window.PVviewer||{};if(!(v.member||v.admin)){if(window.PVo
 function toolCardHTML(o){
   var P=!!o.is_paid;
   var tags=(o.tags||[]).filter(function(x){return String(x).trim()});
-  var T=tags.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('');
+  var T=(o.trending_until&&new Date(o.trending_until).getTime()>Date.now()?'<span class="tag trend">Trending</span>':"")+tags.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('');
   var starCls=iTF(o.id)?' on':'';
   var F='<button class="star'+starCls+'" data-tfav="'+o.id+'" type="button">★</button>';
   var accessHtml=P?'<span class="access">Official Paid</span>':'<span class="access free">FREE</span>';
