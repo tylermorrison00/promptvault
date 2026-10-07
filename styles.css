@@ -17,8 +17,7 @@
 
 @media (max-width:640px){
   .hero .headstat{flex-direction:column;gap:12px;text-align:center;align-items:center}
-  .hero .headstat .headstatlabel{max-width:none!important;text-align:center;display:block;line-height:1.6;white-space:nowrap;font-size:.85rem!important}
-  .hero .headstat .headstatlabel br{display:none}
+  .hero .headstat .headstatlabel{max-width:220px!important;text-align:center;display:block;line-height:1.6;font-size:.85rem!important}
   .hero .headstat .statring{width:140px!important;height:140px!important;flex:none}
   .hero .headstat .statnum{font-size:2.2rem!important}
 }
