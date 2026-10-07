@@ -11,3 +11,4 @@
 .promptcard[data-cat="tiktok"] .cardmedia img{aspect-ratio:9/16;max-height:520px}
 .prewrap{white-space:pre-wrap}
 #nicheBody img{max-width:100%;max-height:300px;object-fit:cover;border-radius:12px;display:block;margin:0 auto 16px}
+.hero .container{position:relative;z-index:1}
