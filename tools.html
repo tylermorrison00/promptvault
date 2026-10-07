@@ -12,7 +12,7 @@ function toolCardHTML(o){
   var T=tags.map(function(x){return '<span class="tag">'+esc(x)+'</span>'}).join('');
   var starCls=iTF(o.id)?' on':'';
   var F='<button class="star'+starCls+'" data-tfav="'+o.id+'" type="button">★</button>';
-  var accessHtml=P?'<span class="access">PAID</span>':'<span class="access free">FREE</span>';
+  var accessHtml=P?'<span class="access">Official Paid</span>':'<span class="access free">FREE</span>';
   var html='<article class="promptcard" data-tid="'+o.id+'">';
   html+='<div class="cardmeta"><span style="display:flex;gap:6px;flex-wrap:wrap">'+T+'</span>'+accessHtml+'</div>';
   html+='<h3>'+esc(o.name)+'</h3>';
