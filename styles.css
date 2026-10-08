@@ -32,9 +32,10 @@
 }
 
 @media (max-width:640px){
-  .libcounter{margin-top:0;margin-bottom:40px}
-  .libcounter .headstat{flex-direction:column;align-items:center;gap:12px}
-  .libcounter .headring{width:140px!important;height:140px!important}
+  .libcounter{margin-top:-30px!important;margin-bottom:70px!important}
+  .libcounter .headstat{display:flex!important;flex-direction:column!important;align-items:center!important;gap:12px!important;text-align:center!important}
+  .libcounter .headstatlabel{text-align:center!important;max-width:100%!important;margin:0 auto!important}
+  .libcounter .headring{width:140px!important;height:140px!important;margin:0 auto!important}
   .libcounter .statnum{font-size:2.2rem!important}
   .libsub{text-align:center;max-width:100%}
   .sectionhead.libhead{flex-direction:column;text-align:center;gap:12px}
