@@ -68,7 +68,7 @@ function renderToolTagFilters(){
       if(t&&!seen[k]){seen[k]=1;tags.push(t)}
     });
   });
-  tags.sort(function(a,b){return a.toLowerCase().localeCompare(b.toLowerCase())});
+  var PINNED=["video prompt","niche blueprint prompt"];tags.sort(function(a,b){var x=a.toLowerCase(),y=b.toLowerCase();var px=PINNED.indexOf(x),py=PINNED.indexOf(y);if(px>=0&&py>=0)return px-py;if(px>=0)return -1;if(py>=0)return 1;return x<y?-1:x>y?1:0});
   w.innerHTML=tags.map(function(t){
     return '<button class="filter" data-f="tag:'+esc(t.toLowerCase())+'" type="button">'+esc(t)+'</button>';
   }).join('');
