@@ -32,5 +32,11 @@
 }
 
 @media (max-width:640px){
-  .libcounter{margin-top:-16px;margin-bottom:56px}
+  .libcounter{margin-top:0;margin-bottom:40px}
+  .libcounter .headstat{flex-direction:column;align-items:center;gap:12px}
+  .libcounter .headring{width:140px!important;height:140px!important}
+  .libcounter .statnum{font-size:2.2rem!important}
+  .libsub{text-align:center;max-width:100%}
+  .sectionhead.libhead{flex-direction:column;text-align:center;gap:12px}
+  .sectionhead.libhead h2{white-space:normal}
 }
