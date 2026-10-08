@@ -4,4 +4,16 @@
 <script src="site.js"></script>
 <script>if(window.PVtrendModal)window.PVtrendModal("suggestTrendBtn","prompts")</script>
 
+<script>
+(function(){
+  if(location.hash==="#pricing"){
+    var tries=0;
+    var t=setInterval(function(){
+      var el=document.getElementById("pricing");
+      if(el){el.scrollIntoView({behavior:"smooth"});clearInterval(t)}
+      if(++tries>20)clearInterval(t);
+    },300);
+  }
+})();
+</script>
 </body></html>
