@@ -41,3 +41,15 @@
   .sectionhead.libhead{flex-direction:column;text-align:center;gap:12px}
   .sectionhead.libhead h2{white-space:normal}
 }
+
+.cardmedia{position:relative}
+.moreex{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.75));border:0;color:#fff;padding:28px 12px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.8rem;font-weight:600;width:100%}
+.moreex .mearrow{font-size:1.2rem;line-height:1}
+.moreex:hover .mearrow{transform:translateY(2px)}
+.excarousel{position:relative;margin-bottom:16px}
+.excarousel img{width:100%;border-radius:12px;display:block}
+.exnav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(0,0,0,.6);color:#fff;font-size:1.2rem;cursor:pointer;display:grid;place-items:center}
+.exnav.prev{left:8px}
+.exnav.next{right:8px}
+.excount{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:.75rem;padding:4px 10px;border-radius:99px}
+
