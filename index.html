@@ -9,9 +9,13 @@
   if(location.hash==="#pricing"){
     var tries=0;
     var t=setInterval(function(){
+      var grid=document.getElementById("promptgrid");
+      var loading=document.getElementById("loadingbox");
       var el=document.getElementById("pricing");
-      if(el){el.scrollIntoView({behavior:"smooth"});clearInterval(t)}
-      if(++tries>20)clearInterval(t);
+      // Wait until prompts are loaded (loadingbox gone) then scroll
+      var loaded=!loading||loading.style.display==="none"||!grid.contains(loading);
+      if(el&&loaded){el.scrollIntoView({behavior:"smooth"});clearInterval(t)}
+      if(++tries>40)clearInterval(t);
     },300);
   }
 })();
