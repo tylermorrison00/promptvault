@@ -102,8 +102,8 @@ function renderToolTagPick(){
 function loadTools(){
   var grid=$('toolgrid');if(!grid)return;
   grid.innerHTML='<div class="loadingbox">Loading tools...</div>';
-  api('/rest/v1/tools?select=*&order=sort_order.asc,created_at.desc','GET').then(function(rows){
-    rows=rows||[];toolRows=rows;renderToolTagFilters();renderTools();
+  function pinSort(rows){return (rows||[]).slice().sort(function(a,b){var ao=a.sort_order||0,bo=b.sort_order||0;if(ao>0&&bo>0)return ao-bo;if(ao>0)return -1;if(bo>0)return 1;return new Date(b.created_at)-new Date(a.created_at)})}api('/rest/v1/tools?select=*&order=created_at.desc','GET').then(function(rows){
+    rows=pinSort(rows);toolRows=rows;renderToolTagFilters();renderTools();
     if(document.body.classList.contains('admin')){
       Array.prototype.forEach.call(grid.querySelectorAll('.promptcard'),function(card){
         if(card.querySelector('.adminbar')||!card._row)return;
