@@ -65,4 +65,4 @@
 .partbtns{display:flex;flex-wrap:nowrap;gap:8px;margin-top:8px}
 .partbtns .copy{flex:1 1 auto;white-space:nowrap}
 .partbtns .particon{flex:1 1 0;min-width:0;overflow:hidden;padding-left:6px;padding-right:6px}
-
+.preview.lockedprev{height:auto;min-height:110px}
