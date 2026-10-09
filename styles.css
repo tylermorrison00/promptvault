@@ -62,5 +62,7 @@
 .excarousel img{width:auto;max-width:100%;max-height:52vh}
 }
 
-.partbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.partbtns{display:flex;flex-wrap:nowrap;gap:8px;margin-top:8px}
+.partbtns .copy{flex:1 1 0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:8px;padding-right:8px}
+.partbtns .particon{flex:1 1 0}
 
