@@ -62,3 +62,9 @@
 .excarousel img{width:auto;max-width:100%;max-height:52vh}
 }
 
+.partrow{margin-top:8px}
+.partinfo{display:block;font-size:.72rem;color:var(--muted);margin-bottom:8px}
+.partbtns{display:flex;flex-wrap:wrap;gap:8px}
+.copypart{background:var(--code);border:1px solid var(--line)}
+.dlbtn{background:transparent!important;border:1px dashed var(--accent)!important;color:var(--accent)!important}
+
