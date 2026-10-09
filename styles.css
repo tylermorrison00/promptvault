@@ -54,3 +54,6 @@
 .excarousel{position:relative;margin-bottom:16px}
 .excarousel img{width:100%;height:auto;display:block;border-radius:12px}
 
+.preview.lockedprev{max-height:none;overflow:visible}
+.preview.lockedprev:after{display:none}
+
