@@ -66,3 +66,9 @@
 .partbtns .copy{flex:1 1 auto;white-space:nowrap}
 .partbtns .particon{flex:1 1 0;min-width:0;overflow:hidden;padding-left:6px;padding-right:6px}
 .preview.lockedprev{height:auto;min-height:110px}
+
+.navdrop{position:relative;display:flex;align-items:center;gap:4px}
+.navarrow{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:0;background:transparent;color:var(--accent);cursor:pointer;border-radius:8px;padding:0}
+.navarrow:hover{background:var(--soft)}
+.navarrow svg{width:18px;height:18px}
+.navdrop .fabmenu{position:absolute;top:calc(100% + 10px);left:0;z-index:70}
