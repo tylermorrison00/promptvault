@@ -14,7 +14,7 @@
 
 
 
-.promptgrid.yt{grid-template-columns:repeat(2,1fr)}
+.promptgrid.yt{grid-template-columns:repeat(3,1fr)}
 .promptcard[data-cat="youtube"] .cardmedia img{aspect-ratio:16/9}
 .promptcard[data-cat="tiktok"] .
 .prewrap{white-space:pre-wrap}
